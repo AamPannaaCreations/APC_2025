@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@import 'locomotive-scroll/dist/locomotive-scroll.css';
+
+
+
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-128px * 7 - 1rem * 7)); /* Adjust based on item width + margin */
+  }
+}
+
+.font-bricolage {
+  font-family: var(--font-bricolage-grotesque), system-ui, sans-serif;
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
