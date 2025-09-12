@@ -1,41 +1,4 @@
-// // "use client";
 
-// // import Link from "next/link";
-// // import Image from "next/image";
-// // import { usePathname } from "next/navigation";
-// // import { useState, useEffect } from "react";
-// // import { 
-// //   HiHome, 
-// //   HiInformationCircle, 
-// //   HiCog, 
-// //   HiUserGroup, 
-// //   HiDocumentText,
-// //   HiChat 
-// // } from "react-icons/hi";
-
-// // const Navbar = () => {
-// //   const pathname = usePathname();
-// //   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-// //   const isActive = (path: string): boolean => {
-// //     return pathname === path;
-// //   };
-
-// //   const toggleMobileMenu = () => {
-// //     setIsMobileMenuOpen(!isMobileMenuOpen);
-// //   };
-
-// //   const closeMobileMenu = () => {
-// //     setIsMobileMenuOpen(false);
-// //   };
-
-// //   // Close mobile menu on escape key
-// //   useEffect(() => {
-// //     const handleEscape = (e: KeyboardEvent) => {
-// //       if (e.key === "Escape") {
-// //         setIsMobileMenuOpen(false);
-// //       }
-// //     };
 
 // //     if (isMobileMenuOpen) {
 // //       document.addEventListener("keydown", handleEscape);
