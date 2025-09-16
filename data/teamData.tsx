@@ -8,6 +8,7 @@ export interface TeamMember {
   description: string;
 }
 
+
 export interface TeamData {
   companyHead: TeamMember[];
   leadership: TeamMember[];
