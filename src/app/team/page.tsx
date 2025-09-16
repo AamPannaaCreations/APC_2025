@@ -57,35 +57,13 @@ const Team = () => {
             className="w-full h-full object-cover transition-all duration-500"
           />
 
-          {/* Overlay with description */}
-          {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end justify-center p-3">
-            <div className="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-              <div className="text-xs leading-relaxed mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-200">
-                {member.description.substring(0, 60)}...
-              </div>
-              <div className="flex justify-center">
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-blue-600 text-white p-1.5 rounded-full hover:bg-blue-700 transition-colors duration-200 transform scale-75 group-hover:scale-100"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <FaLinkedinIn size={12} />
-                </a>
-              </div>
-            </div>
-          </div> */}
+          
         </div>
 
         {/* Floating elements around the circle */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          {/* Role Badge */}
-          {/* <span className="absolute top-6 left-[-80px] transform opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 ease-out delay-100 pointer-events-auto">
-            <div className="bg-gradient-to-r from-pink-400 to-purple-500 text-white font-bold text-xs px-3 py-1.5 rounded-full -rotate-12 shadow-lg">
-              {member.role}
-            </div>
-          </span> */}
+         
+          
 
           {/* Name Badge */}
           <span className="absolute -bottom-8 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold text-sm px-4 py-2 rounded-full transform opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 ease-out delay-300 shadow-lg pointer-events-auto">
