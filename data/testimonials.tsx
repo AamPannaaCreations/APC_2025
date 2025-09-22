@@ -18,18 +18,18 @@ export const clientTestimonials: Testimonials[] = [
     title: "Sharmila Puranik",
     role: "Founder, Luminary Pathways",
     description:
-      "Nikhita is a hard working professional. She and her talented team goes above and beyond to work with strategy and system. I have no doubts on the way they will grow themselves and their brands.",
+      "Nikita is a hard working professional. She and her talented team goes above and beyond to work with strategy and system. I have no doubts on the way they will grow themselves and their brands.",
   },
   {
     id: 3,
     title: "Prathi Tandon",
     role: "Founder, Escape Velocity",
     description:
-      "It took me seconds to close the partnership with Nikhita even before I saw her samples. I have full faith on her expertise and quality of work. She will do wonders in building Aam Pannaa Creations.",
+      "It took me seconds to close the partnership with Nikita even before I saw her samples. I have full faith on her expertise and quality of work. She will do wonders in building Aam Pannaa Creations.",
   },
   {
     id: 4,
-    title: "Vivek",
+    title: "Vivek Kaushik",
     role: "Claylab Education Foundation",
     description:
       "It has been a great association with Nikita and Godhuli. Over time, our trust has only grown stronger, and with their expertise, they are amplifying our presence meaningfully.",
