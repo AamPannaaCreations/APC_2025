@@ -62,6 +62,7 @@ interface SizeData {
   pixelRatio: number;
 }
 
+
 class X {
   #config: XConfig;
   #postprocessing: any;
