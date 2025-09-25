@@ -6,7 +6,6 @@ interface Post {
   description: string;
 }
 
-
 export const featuredPosts: Post[] = [
   {
     id: 1,
