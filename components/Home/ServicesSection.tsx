@@ -1,7 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
 import { Code, Share2, User, Palette, TrendingUp, Clock } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+
 
 interface Service {
   id: number;

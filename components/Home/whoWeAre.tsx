@@ -1,7 +1,7 @@
 
-import React from "react";
-import Link from "next/link";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
+import Link from "next/link";
+import React from "react";
 
 const WhoWeAre = () => {
   return (

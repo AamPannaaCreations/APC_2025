@@ -1,9 +1,10 @@
-
 "use client";
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+
+
 import { clientTestimonials } from "@/data/testimonials";
+import { useEffect, useRef, useState } from "react";
 import { projects } from "@/data/projects";
+import Image from "next/image";
 
 const Projects = () => {
   const [isClient, setIsClient] = useState(false);

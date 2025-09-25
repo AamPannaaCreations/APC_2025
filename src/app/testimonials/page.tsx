@@ -1,5 +1,6 @@
-import React from "react";
+
 import { clientTestimonials } from "@/data/testimonials";
+import React from "react";
 
 
 interface Testimonials {

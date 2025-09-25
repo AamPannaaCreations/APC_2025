@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   Linkedin,
   Instagram,
@@ -9,7 +10,6 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
-import Image from "next/image";
 
 const Footer = () => {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);

@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import React, { useRef, useEffect } from "react";
+import { Observer } from "gsap/Observer";
+import { metalness } from "three/tsl";
+import { gsap } from "gsap";
 import {
   Clock,
   PerspectiveCamera,
@@ -25,12 +29,10 @@ import {
   Raycaster,
   Plane,
 } from "three";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
-import { Observer } from "gsap/Observer";
-import { gsap } from "gsap";
-import { metalness } from "three/tsl";
+
 
 gsap.registerPlugin(Observer);
+
 
 interface XConfig {
   canvas?: HTMLCanvasElement;
@@ -39,12 +41,14 @@ interface XConfig {
   size?: "parent" | { width: number; height: number };
 }
 
+
 const isMobile = (() => {
   if (typeof window === 'undefined') return false;
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
   ) || window.innerWidth <= 768;
 })()
+
 
 console.log("Is mobile:", isMobile);
 

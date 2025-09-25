@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { FaLinkedinIn } from "react-icons/fa";
 import { teamData } from "@/data/teamData";
+import { useState } from "react";
 
 const Team = () => {
   const [hoveredMember, setHoveredMember] = useState<TeamMember | null>(null);

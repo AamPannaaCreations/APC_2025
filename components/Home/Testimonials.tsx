@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import { clientTestimonials } from "@/data/testimonials";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { clientTestimonials } from "@/data/testimonials";
+import React from "react";
 
 const Testimonials = () => {
   return (

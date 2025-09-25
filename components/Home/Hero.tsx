@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import TextType from "../TextType";
 import Ballpit from "../Ballpit";
 import Link from "next/link";
-import TextType from "../TextType";
+import React from "react";
 
 const Hero = () => {
   return (

@@ -1,12 +1,12 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { FaCircleArrowLeft } from "react-icons/fa6";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { blogData } from "@/data/blogData";
+import { toast } from "react-hot-toast";
 import Image from "next/image";
 
-import { blogData } from "@/data/blogData";
 
 export interface BlogPost {
   id: number;

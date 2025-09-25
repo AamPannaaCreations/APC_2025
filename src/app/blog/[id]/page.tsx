@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { toast } from "react-hot-toast";
 import { FaCircleArrowLeft } from "react-icons/fa6";
+import React, { useEffect, useState } from "react";
 import { blogData } from "@/data/blogData";
+import { toast } from "react-hot-toast";
 import Image from "next/image";
+
 
 export interface BlogPost {
   id: number;
@@ -23,6 +24,7 @@ export interface BlogPost {
     content: string;
   }[];
 }
+
 
 const BlogPostPage = () => {
   const router = useRouter();
@@ -46,13 +48,16 @@ const BlogPostPage = () => {
     }
   }, [params?.id, router]);
 
+  
   const handleBack = (): void => {
     router.back();
   };
 
+
   const handleBackToBlog = (): void => {
     router.push("/blog");
   };
+
 
   if (loading) {
     return (
@@ -243,5 +248,6 @@ const BlogPostPage = () => {
     </div>
   );
 };
+
 
 export default BlogPostPage;

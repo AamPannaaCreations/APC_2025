@@ -1,10 +1,10 @@
 
 'use client'
 
-import React from 'react';
+import { featuredPosts } from '@/data/featuredPost';
 import Image from 'next/image';
 import Link from 'next/link';
-import { featuredPosts } from '@/data/featuredPost';
+import React from 'react';
 
 
 const FeatureSection: React.FC = () => {
