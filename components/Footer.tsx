@@ -94,7 +94,7 @@ const Footer = () => {
               </div> */}
               <div className="flex items-center space-x-3 text-black hover:text-black transition-colors duration-200">
                 <MapPin size={18} />
-                <span>Ghaziabad, Uttar Pradesh, India</span>
+                <span>Delhi NCR, Uttar Pradesh, India</span>
               </div>
             </div>
           </div>
