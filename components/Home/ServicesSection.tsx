@@ -67,7 +67,7 @@ const clientLogos: Client[] = [
   { name: "Escape Velocity", img: "/clientLogos/ev.png" },
   { name: "One7", img: "/clientLogos/one7logo.png" },
   { name: "LiveIn My Dream", img: "/clientLogos/livinMyDream.jpeg" },
-  { name: "SSY" , img: "/clientLogos/SSY.jpeg" },
+  { name: "SSY" , img: "/clientLogos/ssy.jpeg" },
   { name: "The Quiet Reset", img: "/clientLogos/theQuietReset.jpeg" },
 ];
 
