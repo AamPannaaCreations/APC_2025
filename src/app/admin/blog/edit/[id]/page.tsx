@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -9,12 +9,17 @@ import { Card } from '@/components/ui/card';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 import { FaArrowLeft } from 'react-icons/fa';
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
 
-export default function EditBlog({ params }: { params: { id: string } }) {
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+
+export default function EditBlog({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [imagePreview, setImagePreview] = useState<string>('');
+  const [blogId, setBlogId] = useState<string>('');
   const [formData, setFormData] = useState({
     title: '',
     excerpt: '',
@@ -25,13 +30,27 @@ export default function EditBlog({ params }: { params: { id: string } }) {
     img: ''
   });
 
-  useEffect(() => {
-    fetchBlog();
-  }, []);
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'color': [] }, { 'background': [] }],
+      ['link', 'image'],
+      ['clean']
+    ],
+  };
 
-  const fetchBlog = async () => {
+  useEffect(() => {
+    params.then(({ id }) => {
+      setBlogId(id);
+      fetchBlog(id);
+    });
+  }, [params]);
+
+  const fetchBlog = async (id: string) => {
     try {
-      const res = await fetch(`/api/blogs/${params.id}`);
+      const res = await fetch(`/api/blogs/${id}`);
       const data = await res.json();
       
       if (data.success) {
@@ -83,7 +102,7 @@ export default function EditBlog({ params }: { params: { id: string } }) {
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/blogs/${params.id}`, {
+      const res = await fetch(`/api/blogs/${blogId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -114,7 +133,7 @@ export default function EditBlog({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-8">
+    <div className="max-w-4xl mx-auto p-8">
       <Button
         variant="ghost"
         onClick={() => router.push('/admin')}
@@ -159,9 +178,8 @@ export default function EditBlog({ params }: { params: { id: string } }) {
 
           <div>
             <label className="block mb-2 font-medium">Excerpt *</label>
-            <Textarea
+            <Input
               required
-              rows={3}
               value={formData.excerpt}
               onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
             />
@@ -169,11 +187,13 @@ export default function EditBlog({ params }: { params: { id: string } }) {
 
           <div>
             <label className="block mb-2 font-medium">Content *</label>
-            <Textarea
-              required
-              rows={15}
+            <ReactQuill
+              theme="snow"
               value={formData.content}
-              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+              onChange={(content) => setFormData({ ...formData, content })}
+              modules={modules}
+              className="bg-white"
+              style={{ minHeight: '300px' }}
             />
           </div>
 
