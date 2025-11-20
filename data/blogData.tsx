@@ -56,7 +56,6 @@ export const blogData: BlogPost[] = [
     }
   ]
 },
-
   {
     id: 1,
     title: "Is Virtual CMO the new norm for modern day business?",
