@@ -5,9 +5,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
-import { Card } from '@/src/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 import { FaArrowLeft } from 'react-icons/fa';
