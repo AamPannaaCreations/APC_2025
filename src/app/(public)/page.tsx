@@ -11,7 +11,7 @@ export const dynamic = 'force-static';
 
 export default function Home() {
   return (
-    <main>
+    <main className=''>
       <Hero />
       <WhoWeAre />
       <Services /> 
