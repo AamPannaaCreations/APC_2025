@@ -1,194 +1,234 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { toast } from 'react-hot-toast';
-import Image from 'next/image';
-import { FaEdit, FaTrash, FaPlus, FaStar } from 'react-icons/fa';
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, NotebookPen, FileText, TrendingUp } from "lucide-react";
+import Link from "next/link";
+import toast from "react-hot-toast";
 
-interface Blog {
-  _id: string;
-  title: string;
-  excerpt: string;
-  img: string;
-  creator: string;
-  date: string;
-  featured: boolean;
-  tags: string[];
+interface DashboardStats {
+  employees: {
+    total: number;
+    active: number;
+    inactive: number;
+  };
+  workshops: {
+    total: number;
+    upcoming: number;
+    past: number;
+    totalRegistrations: number;
+  };
+  blogs: {
+    total: number;
+    featured: number;
+  };
 }
 
 export default function AdminDashboard() {
-  
-  const router = useRouter();
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [stats, setStats] = useState<DashboardStats>({
+    employees: { total: 0, active: 0, inactive: 0 },
+    workshops: { total: 0, upcoming: 0, past: 0, totalRegistrations: 0 },
+    blogs: { total: 0, featured: 0 },
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchBlogs();
+    fetchDashboardStats();
   }, []);
 
-  const fetchBlogs = async () => {
+  const fetchDashboardStats = async () => {
     try {
-      const res = await fetch('/api/blogs');
-      const data = await res.json();
-      if (data.success) {
-        setBlogs(data.data);
+      const [employeesRes, workshopsRes, blogsRes] = await Promise.all([
+        fetch("/api/employee"),
+        fetch("/api/workshop"),
+        fetch("/api/blogs"),
+      ]);
+
+      if (employeesRes.ok) {
+        const employeeData = await employeesRes.json();
+        setStats((prev) => ({ ...prev, employees: employeeData.stats }));
+      }
+
+      if (workshopsRes.ok) {
+        const workshopData = await workshopsRes.json();
+        setStats((prev) => ({ ...prev, workshops: workshopData.stats }));
+      }
+
+      if (blogsRes.ok) {
+        const blogData = await blogsRes.json();
+        const total = blogData.data.length;
+        const featured = blogData.data.filter((b: any) => b.featured).length;
+        setStats((prev) => ({ ...prev, blogs: { total, featured } }));
       }
     } catch (error) {
-      toast.error('Failed to fetch blogs');
+      console.error("Error fetching dashboard stats:", error);
+      toast.error("Failed to load dashboard data");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this blog?')) return;
-
-    try {
-      const res = await fetch(`/api/blogs/${id}`, {
-        method: 'DELETE'
-      });
-
-      if (res.ok) {
-        toast.success('Blog deleted successfully');
-        setBlogs(blogs.filter(blog => blog._id !== id));
-      } else {
-        toast.error('Failed to delete blog');
-      }
-    } catch (error) {
-      toast.error('An error occurred');
-    }
-  };
-
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-2xl">Loading...</div>
+      <div className="flex items-center justify-center h-96">
+        <p>Loading dashboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-8">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-4xl font-bold mb-2">Blog Management</h1>
-          <p className="text-muted-foreground">Manage all your blog posts</p>
-        </div>
-        <Button 
-          onClick={() => router.push('/admin/blog/new')}
-          className="flex items-center gap-2 hover:cursor-pointer"
-        >
-          <FaPlus /> Post New Blog
-        </Button>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <p className="text-muted-foreground">Welcome to your admin panel</p>
       </div>
 
-      <Card className="p-6">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left p-4 font-semibold">Image</th>
-                <th className="text-left p-4 font-semibold">Title</th>
-                <th className="text-left p-4 font-semibold">Creator</th>
-                <th className="text-left p-4 font-semibold">Date</th>
-                <th className="text-left p-4 font-semibold">Status</th>
-                <th className="text-left p-4 font-semibold">Tags</th>
-                <th className="text-center p-4 font-semibold">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {blogs.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="text-center p-8 text-muted-foreground">
-                    No blogs found. Create your first blog post!
-                  </td>
-                </tr>
-              ) : (
-                blogs.map((blog) => (
-                  <tr key={blog._id} className="border-b hover:bg-gray-50">
-                    <td className="p-4">
-                      <Image
-                        src={blog.img}
-                        alt={blog.title}
-                        width={80}
-                        height={60}
-                        className="rounded object-cover"
-                      />
-                    </td>
-                    <td className="p-4">
-                      <div className="max-w-xs">
-                        <p className="font-semibold truncate">{blog.title}</p>
-                        <p className="text-sm text-muted-foreground truncate">
-                          {blog.excerpt}
-                        </p>
-                      </div>
-                    </td>
-                    <td className="p-4">{blog.creator}</td>
-                    <td className="p-4 whitespace-nowrap">
-                      {new Date(blog.date).toLocaleDateString()}
-                    </td>
-                    <td className="p-4">
-                      {blog.featured ? (
-                        <span className="flex items-center gap-1 text-yellow-600">
-                          <FaStar /> Featured
-                        </span>
-                      ) : (
-                        <span className="text-muted-foreground">Regular</span>
-                      )}
-                    </td>
-                    <td className="p-4">
-                      <div className="flex flex-wrap gap-1">
-                        {blog.tags?.slice(0, 2).map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                        {blog.tags?.length > 2 && (
-                          <span className="text-xs text-muted-foreground">
-                            +{blog.tags.length - 2}
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex gap-2 justify-center">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => router.push(`/admin/edit/${blog._id}`)}
-                          className="flex items-center gap-1"
-                        >
-                          <FaEdit /> Edit
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={() => handleDelete(blog._id)}
-                          className="flex items-center gap-1"
-                        >
-                          <FaTrash /> Delete
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+      {/* Overview Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Employees</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.employees.total}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.employees.active} active
+            </p>
+          </CardContent>
+        </Card>
 
-        {blogs.length > 0 && (
-          <div className="mt-6 text-sm text-muted-foreground">
-            Total Posts: {blogs.length}
-          </div>
-        )}
-      </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Workshops</CardTitle>
+            <NotebookPen className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.workshops.total}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.workshops.upcoming} upcoming
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Blogs</CardTitle>
+            <FileText className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.blogs.total}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.blogs.featured} featured
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Workshop Registrations
+            </CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {stats.workshops.totalRegistrations}
+            </div>
+            <p className="text-xs text-muted-foreground">Total registrations</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Link href="/admin/employee">
+          <Card className="hover:bg-accent transition-colors cursor-pointer">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Manage Employees
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                View and manage all employees
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/workshop">
+          <Card className="hover:bg-accent transition-colors cursor-pointer">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <NotebookPen className="h-5 w-5" />
+                Manage Workshops
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Create and manage workshops
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/blog">
+          <Card className="hover:bg-accent transition-colors cursor-pointer">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Manage Blogs
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Write and publish blog posts
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
+
+      {/* Recent Activity Section */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Employee Overview</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex justify-between">
+              <span className="text-sm">Active Employees</span>
+              <span className="text-sm font-bold">{stats.employees.active}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm">Inactive Employees</span>
+              <span className="text-sm font-bold">
+                {stats.employees.inactive}
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Workshop Overview</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex justify-between">
+              <span className="text-sm">Upcoming Workshops</span>
+              <span className="text-sm font-bold">
+                {stats.workshops.upcoming}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm">Past Workshops</span>
+              <span className="text-sm font-bold">{stats.workshops.past}</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
