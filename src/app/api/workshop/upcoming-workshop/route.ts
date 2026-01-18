@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import mongoose from 'mongoose';
 import { Workshop } from '@/models/workshop';
 
     

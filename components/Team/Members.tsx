@@ -3,7 +3,6 @@
 import { FaLinkedinIn } from "react-icons/fa";
 import { teamData } from "@/data/teamData";
 import { useState } from "react";
-import Image from "next/image";
 
 import React from "react";
 

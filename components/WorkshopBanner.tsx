@@ -1,22 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { X } from "lucide-react";
 import Link from "next/link";
-
-interface Workshop {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  link?: string;
-}
 
 export default function WorkshopBanner() {
 
-  const [workshop, setWorkshop] = useState<Workshop | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   // useEffect(() => {
   //   // Fetch workshop data from API

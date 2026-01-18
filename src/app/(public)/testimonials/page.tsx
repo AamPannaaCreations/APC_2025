@@ -5,23 +5,10 @@ import React from "react";
 export const dynamic = 'force-static';
 
 
-interface Testimonials {
-  id: number;
-  title: string;
-  role: string;
-  description: string;
-}
 
 const TestimonialsPage: React.FC = () => {
   // Sample data - replace with your actual portfolioItems data
 
-  // Function to get initials from name
-  const getInitials = (name: string): string => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("");
-  };
 
   return (
     // <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">

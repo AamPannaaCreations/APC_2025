@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 interface Workshop {
   _id: string;
@@ -29,7 +29,6 @@ interface WorkshopTableProps {
 
 export function WorkshopTable({
   workshops,
-  onEdit,
   onDelete,
 }: WorkshopTableProps) {
   const getStatus = (date: string) => {

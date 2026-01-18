@@ -15,14 +15,7 @@ import {
   HiChat,
   HiChevronDown,
 } from "react-icons/hi";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+
 
 const Navbar = () => {
   const pathname = usePathname();
