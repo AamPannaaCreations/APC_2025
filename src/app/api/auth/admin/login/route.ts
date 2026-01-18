@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     );
 
     // Set cookie
-    cookies().set('adminToken', token, {
+    (await cookies()).set('adminToken', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
