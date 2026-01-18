@@ -16,7 +16,7 @@ export default function RootLayout({
       <div className="mt-[48px]"> {/* Push navbar down by banner height */}
         <Navbar />
       </div>
-      <div className="pt-[80px]"> {/* Adjust for combined fixed elements */}
+      <div className="pt-[75px]"> {/* Adjust for combined fixed elements */}
         <Toaster />
         {children}
       </div>
