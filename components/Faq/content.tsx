@@ -2,13 +2,13 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import faqCategories from "@/src/data/faqCategories";
+import faqCategories from "@/data/faqCategories";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
+} from "@/components/ui/accordion";
 
 export default function Content() {
   const containerVariants = {
