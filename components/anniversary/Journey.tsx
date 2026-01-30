@@ -10,10 +10,10 @@ return (
       textColor="#ffffff"
       borderRadius={0.05}
       scrollEase={0.02}
-      bend={1}
-      borderRadius={0.05}
+      // bend={1}
+      // borderRadius={0.05}
       scrollSpeed={2}
-      scrollEase={0.05}
+      // scrollEase={0.05}
     />
   </div>
 )};
