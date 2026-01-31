@@ -243,7 +243,7 @@ export default function Hero() {
       <div className="absolute inset-0">
         <Image
           src="/aniversary/hero-section-background.jpg"
-          alt="Anniversary Background"
+          alt="Aam Pannaa Creations Anniversary"
           fill
           className=""
           priority
