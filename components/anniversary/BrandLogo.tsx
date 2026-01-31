@@ -44,7 +44,7 @@ const imageLogos = [
 
 export default function BrandLogo() {
   return (
-    <div style={{ height: "200px", position: "relative", overflow: "hidden" }}>
+    <div className="bg-[#FFF1C3]" style={{ height: "200px", position: "relative", overflow: "hidden" }}>
       {/* Basic horizontal loop */}
       <LogoLoop
         logos={imageLogos}
@@ -58,18 +58,6 @@ export default function BrandLogo() {
         fadeOutColor="#ffffff"
         ariaLabel="Technology partners"
       />
-
-      {/* Vertical loop with deceleration on hover */}
-      {/* <LogoLoop
-        logos={techLogos}
-        speed={100}
-        direction="left"
-        logoHeight={60}
-        gap={60}
-        hoverSpeed={0}
-        fadeOut
-        useCustomRender={false}
-      /> */}
     </div>
   );
 }

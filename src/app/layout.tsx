@@ -162,11 +162,11 @@ export default function RootLayout({
           ></iframe>
         </noscript>
         
-        <Navbar />
+        {/* <Navbar /> */}
         <Toaster />
         {children}
         <Analytics />
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );
