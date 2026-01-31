@@ -9,8 +9,7 @@ import {
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
 import { Globe } from "@/components/ui/globe";
 import { AvatarCircles } from "../ui/avatar-circles";
-import { AreaChartHero } from "./BentoChart";
-
+import { AnimatedHighlightedAreaChart } from "./Chart";
 
 const avatars = [
   {
@@ -46,26 +45,26 @@ const features = [
     description: "We automatically save your files as you type.",
     href: "/",
     cta: "Learn more",
-    background: <AreaChartHero />,
+    background: <AnimatedHighlightedAreaChart />,
     className: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
   },
   {
     Icon: InputIcon,
     name: "20+ Clients",
-    description: "Search through all your files in one place.",
+    description: "Supports 100+ languages and counting.",
     href: "/",
     cta: "Learn more",
-    background: <AvatarCircles numPeople={99} avatarUrls={avatars} />,
-    className: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
+    background: <img className="absolute -top-20 -right-20 opacity-60" />,
+    className: "lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
   },
   {
     Icon: GlobeIcon,
     name: "5+ Countries",
-    description: "Supports 100+ languages and counting.",
+    description: "Search through all your files in one place.",
     href: "/",
     cta: "Learn more",
     background: <Globe />,
-    className: "lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
+    className: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
   },
   {
     Icon: CalendarIcon,
@@ -90,7 +89,7 @@ const features = [
 
 export function BentoDemo() {
   return (
-    <BentoGrid className="lg:grid-rows-2 bg-[#FFF1C3] px-4 lg:px-32">
+    <BentoGrid className="lg:grid-rows-3 bg-[#FFF1C3] px-4 lg:px-32">
       {features.map((feature) => (
         <BentoCard key={feature.name} {...feature} />
       ))}
