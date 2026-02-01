@@ -16,7 +16,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Badge } from "@/components/ui/badge";
-import { TrendingDown } from "lucide-react";
+import { TrendingDown, TrendingUp } from "lucide-react";
 import React from "react";
 
 // Change it to your needs
@@ -36,7 +36,7 @@ const chartData = [
   { month: "September", desktop: 647, mobile: 489 },
   { month: "October", desktop: 532, mobile: 476 },
   { month: "November", desktop: 803, mobile: 687 },
-  { month: "December", desktop: 271, mobile: 198 },
+  { month: "December", desktop: 271, mobile: 900 },
 ];
 
 const chartConfig = {
@@ -54,24 +54,24 @@ export function AnimatedHighlightedAreaChart() {
   const [xAxis, setXAxis] = React.useState<number | null>(null);
 
   return (
-    // <Card className="bg-[--card-bg]">
-    //   <CardHeader>
-    //     <CardTitle>
-    //       Highlighted Area Chart
-    //       <Badge
-    //         variant="outline"
-    //         className="text-green-500 bg-green-500/10 border-none ml-2"
-    //       >
-    //         <TrendingDown className="h-4 w-4" />
-    //         <span>+5.2%</span>
-    //       </Badge>
-    //     </CardTitle>
-    //     <CardDescription>
-    //       Showing total visitors for the last 6 months
-    //     </CardDescription>
-    //   </CardHeader>
+    <Card className="bg-[--card-bg] !shadow-none !border-0">
+      <CardHeader className="!p-2">
+        <CardTitle>
+          Impression Chart
+          <Badge
+            variant="outline"
+            className="text-green-500 bg-green-500/10 border-none ml-2"
+          >
+            <TrendingUp className="h-4 w-4" />
+            <span>+5.2%</span>
+          </Badge>
+        </CardTitle>
+        <CardDescription>
+          Showing total impression for the last 6 months
+        </CardDescription>
+      </CardHeader>
       
-    //   <CardContent>
+      <CardContent className="!p-1">
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
@@ -170,7 +170,7 @@ export function AnimatedHighlightedAreaChart() {
             />
           </AreaChart>
         </ChartContainer>
-      // </CardContent>
-    // </Card>
+      </CardContent>
+    </Card>
   );
 }
