@@ -104,6 +104,8 @@ import { isMobile } from 'react-device-detect';
 
 
 export default function Journey() {
+  console.log("isMobile:", isMobile);
+
   return (
     <section
       id="journey"
@@ -123,8 +125,8 @@ export default function Journey() {
       <div className="relative z-10 flex items-center justify-center h-[360px] sm:h-[420px] md:h-[500px]">
         <CircularGallery
           /* MOBILE FIRST */
-          bend={ isMobile ? 1.8 : 3}
-          scrollSpeed={isMobile ? 1.2 : 2}
+          bend={ isMobile ? 2 : 3}
+          scrollSpeed={isMobile ? 1.9 : 2}
           scrollEase={0.04}
           borderRadius={0.1}
           textColor="#8C6400"
