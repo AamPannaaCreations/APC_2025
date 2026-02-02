@@ -1,5 +1,4 @@
 import { Bricolage_Grotesque } from "next/font/google";
-import { LoadingBarContainer, useLoadingBar } from "react-top-loading-bar";
 import LoadingBarNavigation from "@/components/LoadingBarNavigation";
 import LoadingBarProvider from "@/components/LoadingBarProvider";
 import { Geist, Geist_Mono } from "next/font/google";
