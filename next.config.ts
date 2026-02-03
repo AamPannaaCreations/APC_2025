@@ -2,18 +2,17 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  transpilePackages: ['gsap', 'locomotive-scroll'],
+  transpilePackages: ["gsap", "locomotive-scroll"],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/dy0jipinn/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
-
-
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   transpilePackages: ['gsap', 'locomotive-scroll'],
-//   experimental: {
-//     esmExternals: false
-//   }
-// }
-
-// module.exports = nextConfig
