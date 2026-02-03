@@ -59,10 +59,9 @@
 
 
 
-
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -70,7 +69,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FaSearch, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaSearch, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type BlogCard = {
@@ -94,7 +93,6 @@ type ApiResponse = {
   };
 };
 
-// Debounce hook
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
@@ -111,11 +109,12 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
-export default function BlogListPage() {
+function BlogListContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
+  const [selectedTag, setSelectedTag] = useState(searchParams.get("tag") || "");
   const [data, setData] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(
@@ -136,6 +135,10 @@ export default function BlogListPage() {
         params.append("search", debouncedSearch);
       }
 
+      if (selectedTag) {
+        params.append("tag", selectedTag);
+      }
+
       const res = await fetch(`/api/blogs?${params.toString()}`);
       const apiData: ApiResponse = await res.json();
       setData(apiData);
@@ -144,27 +147,33 @@ export default function BlogListPage() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, debouncedSearch]);
+  }, [currentPage, debouncedSearch, selectedTag]);
 
   useEffect(() => {
     fetchBlogs();
   }, [fetchBlogs]);
 
-  // Update URL without reload
   useEffect(() => {
     const params = new URLSearchParams();
     if (currentPage > 1) params.set("page", currentPage.toString());
     if (debouncedSearch) params.set("search", debouncedSearch);
+    if (selectedTag) params.set("tag", selectedTag);
     
     const queryString = params.toString();
     router.replace(`/blogT${queryString ? `?${queryString}` : ""}`, {
       scroll: false,
     });
-  }, [currentPage, debouncedSearch, router]);
+  }, [currentPage, debouncedSearch, selectedTag, router]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setSelectedTag("");
+    setCurrentPage(1);
   };
 
   const blogs = data?.blogs || [];
@@ -173,7 +182,6 @@ export default function BlogListPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-4">Blog Posts</h1>
           <p className="text-muted-foreground text-lg">
@@ -181,9 +189,8 @@ export default function BlogListPage() {
           </p>
         </div>
 
-        {/* Search Bar */}
         <Card className="mb-8">
-          <CardContent className="pt-6">
+          <CardContent className="pt-6 space-y-4">
             <div className="relative">
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
               <Input
@@ -192,32 +199,47 @@ export default function BlogListPage() {
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
-                  setCurrentPage(1); // Reset to page 1 on new search
+                  setCurrentPage(1);
                 }}
                 className="pl-10 h-12 text-base"
               />
             </div>
-            {searchQuery && (
-              <div className="mt-3 flex items-center gap-2">
-                <p className="text-sm text-muted-foreground">
-                  Searching for: <span className="font-semibold">{searchQuery}</span>
-                </p>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setSearchQuery("");
-                    setCurrentPage(1);
-                  }}
-                >
-                  Clear
+
+            {(searchQuery || selectedTag) && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-sm text-muted-foreground">Active filters:</span>
+                {searchQuery && (
+                  <Badge variant="secondary" className="gap-2">
+                    Search: {searchQuery}
+                    <FaTimes
+                      className="h-3 w-3 cursor-pointer"
+                      onClick={() => {
+                        setSearchQuery("");
+                        setCurrentPage(1);
+                      }}
+                    />
+                  </Badge>
+                )}
+                {selectedTag && (
+                  <Badge variant="secondary" className="gap-2">
+                    Tag: {selectedTag}
+                    <FaTimes
+                      className="h-3 w-3 cursor-pointer"
+                      onClick={() => {
+                        setSelectedTag("");
+                        setCurrentPage(1);
+                      }}
+                    />
+                  </Badge>
+                )}
+                <Button variant="ghost" size="sm" onClick={clearFilters}>
+                  Clear All
                 </Button>
               </div>
             )}
           </CardContent>
         </Card>
 
-        {/* Results Info */}
         {!loading && pagination && (
           <div className="mb-6 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
@@ -230,7 +252,6 @@ export default function BlogListPage() {
           </div>
         )}
 
-        {/* Blog Grid */}
         {loading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(9)].map((_, i) => (
@@ -253,12 +274,12 @@ export default function BlogListPage() {
             <div className="text-center">
               <h3 className="text-2xl font-semibold mb-2">No blogs found</h3>
               <p className="text-muted-foreground mb-4">
-                {searchQuery
-                  ? `No results for "${searchQuery}". Try a different search term.`
+                {searchQuery || selectedTag
+                  ? "No results match your filters. Try adjusting your search."
                   : "No blog posts available yet."}
               </p>
-              {searchQuery && (
-                <Button onClick={() => setSearchQuery("")}>Clear Search</Button>
+              {(searchQuery || selectedTag) && (
+                <Button onClick={clearFilters}>Clear Filters</Button>
               )}
             </div>
           </Card>
@@ -284,7 +305,17 @@ export default function BlogListPage() {
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {blog.tags?.slice(0, 3).map((tag, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs">
+                        <Badge
+                          key={idx}
+                          variant="secondary"
+                          className="text-xs cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setSelectedTag(tag);
+                            setCurrentPage(1);
+                          }}
+                        >
                           {tag}
                         </Badge>
                       ))}
@@ -303,7 +334,6 @@ export default function BlogListPage() {
           </div>
         )}
 
-        {/* Pagination */}
         {!loading && pagination && pagination.totalPages > 1 && (
           <div className="mt-12 flex items-center justify-center gap-2">
             <Button
@@ -318,7 +348,6 @@ export default function BlogListPage() {
             <div className="flex gap-1">
               {[...Array(pagination.totalPages)].map((_, idx) => {
                 const pageNum = idx + 1;
-                // Show first page, last page, current page, and pages around current
                 const showPage =
                   pageNum === 1 ||
                   pageNum === pagination.totalPages ||
@@ -331,10 +360,7 @@ export default function BlogListPage() {
 
                 if (showEllipsis) {
                   return (
-                    <span
-                      key={pageNum}
-                      className="px-3 py-2 text-muted-foreground"
-                    >
+                    <span key={pageNum} className="px-3 py-2 text-muted-foreground">
                       ...
                     </span>
                   );
@@ -368,5 +394,17 @@ export default function BlogListPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function BlogListPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-2xl">Loading blogs...</div>
+      </div>
+    }>
+      <BlogListContent />
+    </Suspense>
   );
 }

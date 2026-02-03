@@ -4,7 +4,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import confetti from "canvas-confetti";
-import { Heart, Users, Trophy, Award, Globe } from "lucide-react";
+import { Heart, Users, Trophy, Award } from "lucide-react";
 import Magnet from "@/components/Magnet";
 import Link from "next/link";
 

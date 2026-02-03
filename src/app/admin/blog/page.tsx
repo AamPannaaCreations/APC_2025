@@ -504,7 +504,7 @@ export default function BlogDashboard() {
                             size="sm"
                             variant="outline"
                             onClick={() =>
-                              router.push(`/admin/blog/edit/${blog._id}/`)
+                              router.push(`/admin/blog/${blog._id}/edit`)
                             }
                           >
                             <FaEdit className="mr-2 h-4 w-4" />

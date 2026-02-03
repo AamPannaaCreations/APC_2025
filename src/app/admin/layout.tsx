@@ -4,7 +4,7 @@ import { ReactNode, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { User, Home, NotebookPen, FileText, LogOut, Menu, X } from "lucide-react";
+import { User, Home, NotebookPen, FileText, LogOut, Menu} from "lucide-react";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { Button } from "@/components/ui/button";
 import { AuthGuard } from "@/components/admin/authGuard";

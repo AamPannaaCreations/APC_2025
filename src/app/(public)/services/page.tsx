@@ -5,7 +5,7 @@ import { projects } from "@/data/projects";
 import type { Metadata } from "next";
 import Image from "next/image";
 
-const metadata: Metadata = {
+export const metadata: Metadata = {
   title: "Services | Aampanna Creations",
   description:
     "Custom websites, web apps, and e-commerce solutions. Serving clients in India and across the globe.",

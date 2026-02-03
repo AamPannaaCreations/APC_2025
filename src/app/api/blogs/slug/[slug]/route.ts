@@ -4,20 +4,28 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   _: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  await connectDB();
+  try {
+    await connectDB();
 
-  const { slug } = await params;
+    const { slug } = await params;
 
-  const blog = await Blog.findOne({ slug }).lean();
+    const blog = await Blog.findOne({ slug }).lean();
 
-  if (!blog) {
+    if (!blog) {
+      return NextResponse.json(
+        { message: "Blog not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(blog);
+  } catch (error) {
+    console.error("Error fetching blog by slug:", error);
     return NextResponse.json(
-      { message: "Not found" },
-      { status: 404 }
+      { message: "Internal server error" },
+      { status: 500 }
     );
   }
-
-  return NextResponse.json(blog);
 }

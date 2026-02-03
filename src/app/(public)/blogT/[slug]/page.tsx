@@ -1,73 +1,3 @@
-// import RenderEditorContent from "@/components/admin/blog/RenderEditorContent";
-
-// type Blog = {
-//   title: string;
-//   description: string;
-//   mainImage: string;
-//   content: string;
-// };
-
-// async function getBlog(slug: string): Promise<Blog> {
-//   const res = await fetch(
-//     `${process.env.NEXT_PUBLIC_URL}/api/blogs/slug/${slug}`,
-//     { cache: "no-store" }
-//   );
-
-//   if (!res.ok) {
-//     throw new Error("Blog not found");
-//   }
-
-//   return res.json();
-// }
-
-// export default async function BlogViewPage({
-//   params,
-// }: {
-//   params: Promise<{ slug: string }>; 
-// }) {
-
-//   const { slug } = await params;
-
-//   const blog = await getBlog(slug);
-
-//   return (
-//     <article className="max-w-3xl mx-auto">
-//       {blog.mainImage && (
-//         <img
-//           src={blog.mainImage}
-//           alt={blog.title}
-//           className="rounded-xl mb-6"
-//         />
-//       )}
-
-//       <h1 className="text-4xl font-bold mb-3">
-//         {blog.title}
-//       </h1>
-
-//       <p className="text-muted-foreground mb-8">
-//         {blog.description}
-//       </p>
-
-//       <RenderEditorContent content={blog.content} />
-//     </article>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import RenderQuillContent from "@/components/admin/blog/RenderQuillContent";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -75,12 +5,10 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
-import { FaArrowLeft, FaClock, FaCalendar, FaShare } from "react-icons/fa";
+import { FaArrowLeft, FaClock, FaCalendar } from "react-icons/fa";
 import { notFound } from "next/navigation";
 import ShareButton from "@/components/ShareButton";
 import "react-quill/dist/quill.snow.css";
-
-
 
 type Blog = {
   _id: string;
@@ -96,7 +24,7 @@ type Blog = {
 async function getBlog(slug: string): Promise<Blog> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_URL}/api/blogs/slug/${slug}`,
-    { cache: "no-store" }
+    { cache: "no-store" },
   );
 
   if (!res.ok) {
@@ -111,8 +39,6 @@ export default async function BlogViewPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-
-
   const { slug } = await params;
   const blog = await getBlog(slug);
 
@@ -136,20 +62,20 @@ export default async function BlogViewPage({
         </Link>
       </div>
 
-{/* Hero Image */}
-{blog.mainImage && (
-  <div className="w-full max-w-5xl mx-auto px-4 mb-8">
-    <div className="relative w-full aspect-video rounded-xl overflow-hidden">
-      <Image
-        src={blog.mainImage}
-        alt={blog.title}
-        fill
-        priority
-        className="object-contain bg-muted"
-      />
-    </div>
-  </div>
-)}
+      {/* Hero Image */}
+      {blog.mainImage && (
+        <div className="w-full max-w-5xl mx-auto px-4 mb-8">
+          <div className="relative w-full aspect-video rounded-xl overflow-hidden">
+            <Image
+              src={blog.mainImage}
+              alt={blog.title}
+              fill
+              priority
+              className="object-contain bg-muted"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 pb-16">
@@ -224,7 +150,9 @@ export default async function BlogViewPage({
             Explore more insights and tutorials on our blog
           </p>
           <Link href="/blogT">
-            <Button size="lg" className="hover:cursor-pointer">Browse All Posts</Button>
+            <Button size="lg" className="hover:cursor-pointer">
+              Browse All Posts
+            </Button>
           </Link>
         </Card>
       </article>
