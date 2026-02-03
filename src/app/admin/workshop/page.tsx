@@ -121,7 +121,7 @@ export default function AdminWorkshopsPage() {
         totalRegistrations={stats.totalRegistrations}
       />
 
-      <div className="rounded-lg border bg-white">
+      <div className="rounded-lg border">
         <WorkshopTable workshops={workshops} onDelete={handleDelete} />
       </div>
     </div>

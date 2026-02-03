@@ -1,14 +1,17 @@
-'use client';
+"use client";
 
-import { ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { ReactNode, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { User, Home, NotebookPen, FileText, LogOut } from "lucide-react";
+import { User, Home, NotebookPen, FileText, LogOut, Menu} from "lucide-react";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { Button } from "@/components/ui/button";
 import { AuthGuard } from "@/components/admin/authGuard";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import toast from "react-hot-toast";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { name: "Dashboard", href: "/admin", icon: Home },
@@ -21,8 +24,36 @@ interface AdminLayoutProps {
   children: ReactNode;
 }
 
+function SidebarContent({ pathname, onClose }: { pathname: string; onClose?: () => void }) {
+  return (
+    <nav className="space-y-1 px-3 py-4">
+      {NAV_LINKS.map((link) => {
+        const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+        return (
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={onClose}
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors",
+              isActive
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            )}
+          >
+            <link.icon className="h-5 w-5" />
+            {link.name}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -46,56 +77,97 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gray-100 flex flex-col">
+      <div className="min-h-screen bg-background">
         {/* Top Navbar */}
-        <header className="bg-white shadow-sm h-16 flex items-center justify-between px-6">
-          <div className="flex">
-            <Link href="/admin">
-              <Image
-                src="/aampannalogo-svg.png"
-                alt="Admin Logo"
-                width={100}
-                height={80}
-                priority
-                className="mr-4"
-              />
-            </Link>
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex h-16 items-center justify-between px-4 md:px-6">
+            {/* Left: Logo + Mobile Menu */}
+            <div className="flex items-center gap-4">
+              {/* Mobile Menu Toggle */}
+              <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="md:hidden"
+                  >
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Toggle menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-64 p-0">
+                  <div className="flex h-16 items-center border-b px-6">
+                    <Link href="/admin" onClick={() => setSidebarOpen(false)}>
+                      <Image
+                        src="/aampannalogo-svg.png"
+                        alt="Admin Logo"
+                        width={100}
+                        height={40}
+                        priority
+                      />
+                    </Link>
+                  </div>
+                  <SidebarContent 
+                    pathname={pathname} 
+                    onClose={() => setSidebarOpen(false)} 
+                  />
+                </SheetContent>
+              </Sheet>
+
+              {/* Logo */}
+              <Link href="/admin" className="flex items-center">
+                <Image
+                  src="/aampannalogo-svg.png"
+                  alt="Admin Logo"
+                  width={120}
+                  height={48}
+                  priority
+                  className="hidden md:block"
+                />
+                <Image
+                  src="/aampannalogo-svg.png"
+                  alt="Admin Logo"
+                  width={80}
+                  height={32}
+                  priority
+                  className="md:hidden"
+                />
+              </Link>
+            </div>
+
+            {/* Right: Theme Toggle + Logout */}
+            <div className="flex items-center gap-2">
+              <AnimatedThemeToggler />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline">Logout</span>
+              </Button>
+            </div>
           </div>
-          <Button 
-            variant="default" 
-            className="hover:cursor-pointer flex items-center gap-2"
-            onClick={handleLogout}
-          > 
-            <LogOut className="h-4 w-4" />
-            Logout
-          </Button>
         </header>
 
-        {/* Content Area */}
-        <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar */}
-          <aside className="w-64 bg-white shadow-sm">
-            <nav className="mt-6 px-6 space-y-1">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block rounded-md px-3 py-5 text-lg font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
-                >
-                  {link.icon && <link.icon className="inline-block mr-2" />}
-                  {link.name}
-                </Link>
-              ))}
-            </nav>
+        <div className="flex">
+          {/* Desktop Sidebar */}
+          <aside className="hidden md:flex md:w-64 md:flex-col border-r bg-background">
+            <div className="flex-1 overflow-y-auto">
+              <SidebarContent pathname={pathname} />
+            </div>
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 overflow-y-auto px-6 py-6">
-            {/* Breadcrumb */}
-            <div className="mb-6">
-              <Breadcrumb />
+          <main className="flex-1 overflow-y-auto">
+            <div className="container mx-auto px-4 py-6 md:px-6">
+              {/* Breadcrumb */}
+              <div className="mb-6">
+                <Breadcrumb />
+              </div>
+              {children}
             </div>
-            {children}
           </main>
         </div>
       </div>

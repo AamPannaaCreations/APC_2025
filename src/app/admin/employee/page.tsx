@@ -125,7 +125,7 @@ export default function AdminEmployeePage() {
         inactive={stats.inactive}
       />
 
-      <div className="rounded-lg border bg-white">
+      <div className="rounded-lg border">
         <EmployeeTable
           employees={employees}
           onEdit={handleEdit}
