@@ -4,7 +4,7 @@ import { ReactNode, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { User, Home, NotebookPen, FileText, LogOut, Menu} from "lucide-react";
+import { BookUser, Users2Icon , Home, NotebookPen, FileText, LogOut, Menu} from "lucide-react";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { Button } from "@/components/ui/button";
 import { AuthGuard } from "@/components/admin/authGuard";
@@ -15,9 +15,10 @@ import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { name: "Dashboard", href: "/admin", icon: Home },
-  { name: "Employees", href: "/admin/employee", icon: User },
+  { name: "Employees", href: "/admin/employee", icon: Users2Icon },
   { name: "Workshop", href: "/admin/workshop", icon: NotebookPen },
   { name: "Blogs", href: "/admin/blog", icon: FileText },
+  { name: "Subscribers", href: "/admin/subscriber", icon: BookUser },
 ];
 
 interface AdminLayoutProps {
