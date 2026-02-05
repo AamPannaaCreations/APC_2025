@@ -55,6 +55,7 @@
     "react-quill-new": "^3.8.2",
     "react-top-loading-bar": "^3.0.2",
     "recharts": "^2.15.4",
+    "resend": "^6.9.1",
     "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",

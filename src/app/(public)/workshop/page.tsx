@@ -70,14 +70,6 @@ export default function WorkshopPage() {
 
   const selectedWorkshopData = upcomingWorkshops.find(w => w.id === selectedWorkshop)
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p>Loading workshops...</p>
-      </div>
-    )
-  }
-
   return (
     <div className='min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8'>
       <div className='max-w-7xl mx-auto'>

@@ -1,20 +1,3 @@
-// //Get all published blog posts
-
-// import { NextResponse } from "next/server";
-// import Blog from "@/models/blog";
-// import { connectDB } from "@/lib/mongodb";
-
-// export async function GET() {
-//   await connectDB();
-//   const blogs = await Blog.find({ published: true })
-//     .sort({ createdAt: -1 })
-//     .select("title slug description mainImage createdAt");
-
-//   return NextResponse.json(blogs);
-// }
-
-
-
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import Blog from "@/models/blog";

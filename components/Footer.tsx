@@ -9,6 +9,7 @@ import {
   MapPin,
 } from "lucide-react";
 import Link from "next/link";
+import SubscribeForm from '@/components/SubscribeForm'
 
 const Footer = () => {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
@@ -177,13 +178,13 @@ const Footer = () => {
           </div>
 
           {/* Newsletter signup */}
-          <div className="lg:col-span-1"></div>
+          {/* <div className="lg:col-span-1"> <SubscribeForm source="footer" /> </div> */}
         </div>
 
         {/* Newsletter section */}
-        {/* <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 rounded-2xl p-8 mb-12 border border-gray-700/50 backdrop-blur-sm">
-          <div className="max-w-2xl">
-            <h4 className="text-2xl font-bold text-white mb-4">Stay in the loop</h4>
+        {/* <div className=" rounded-2xl p-8 mb-12 border border-gray-700/50 backdrop-blur-sm"> */}
+          <div className="max-w-2xl p-8">
+            {/* <h4 className="text-2xl font-bold text-white mb-4">Stay in the loop</h4>
             <p className="text-gray-300 mb-6">
               Get the latest updates on our projects, insights, and creative process delivered to your inbox.
             </p>
@@ -196,9 +197,11 @@ const Footer = () => {
               <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
                 Subscribe
               </button>
-            </div>
+            </div> */}
+
+            <SubscribeForm source="footer" />
           </div>
-        </div> */}
+        {/* </div> */}
 
         {/* Bottom section */}
         <div className="border-t border-gray-700 pt-8">

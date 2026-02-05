@@ -10,6 +10,9 @@ import { notFound } from "next/navigation";
 import ShareButton from "@/components/ShareButton";
 import "react-quill/dist/quill.snow.css";
 
+// No Need to validate each blog 
+// export const revalidate = 604800; 
+
 type Blog = {
   _id: string;
   title: string;
@@ -24,7 +27,6 @@ type Blog = {
 async function getBlog(slug: string): Promise<Blog> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_URL}/api/blogs/slug/${slug}`,
-    { cache: "no-store" },
   );
 
   if (!res.ok) {
