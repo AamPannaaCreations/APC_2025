@@ -44,8 +44,9 @@ export default function SubscribeForm({ source = "website", className }: Subscri
       toast.success(data.message, { id: subscribeToast });
       setEmail("");
       setName("");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to subscribe", { id: subscribeToast });
+    } catch (error) {
+      toast.error("Failed to subscribe", { id: subscribeToast });
+      console.error("Subscription error:", error);
     } finally {
       setLoading(false);
     }

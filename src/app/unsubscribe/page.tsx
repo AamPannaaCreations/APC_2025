@@ -64,10 +64,11 @@ function UnsubscribeContent() {
 
       toast.success(data.message, { id: unsubscribeToast });
       setUnsubscribed(true);
-    } catch (error: any) {
-      toast.error(error.message || "Failed to unsubscribe", {
+    } catch (error: unknown) {
+      toast.error("Failed to unsubscribe", {
         id: unsubscribeToast,
       });
+      console.error("Failed to unsubscribe",error);
     } finally {
       setLoading(false);
     }
@@ -82,20 +83,20 @@ function UnsubscribeContent() {
               <FaCheckCircle className="text-4xl text-green-600 dark:text-green-400" />
             </div>
             <CardTitle className="text-3xl font-bold">
-              You've Been Unsubscribed
+              {`You've Been Unsubscribed`}
             </CardTitle>
           </CardHeader>
 
           <CardContent className="text-center space-y-6">
             <p className="text-lg text-muted-foreground">
-              We've removed <strong className="text-foreground">{email}</strong>{" "}
-              from our mailing list. You won't receive any more newsletters from
-              us.
+              {`We've removed`}<strong className="text-foreground">{email}</strong>{" "}
+              {`from our mailing list. You won't receive any more newsletters from
+              us.`}
             </p>
 
             <div className="p-5 bg-muted/50 rounded-lg border">
               <p className="text-sm text-muted-foreground mb-2">
-                We're sorry to see you go! 😢
+                {`We're sorry to see you go! 😢`}
               </p>
               <p className="text-sm">
                 Changed your mind?{" "}
@@ -144,7 +145,7 @@ function UnsubscribeContent() {
             Unsubscribe from Newsletter
           </CardTitle>
           <p className="text-muted-foreground">
-            We're sad to see you go, but we understand.
+            {`We're sad to see you go, but we understand.`}
           </p>
         </CardHeader>
 
@@ -163,7 +164,7 @@ function UnsubscribeContent() {
             {/* Feedback */}
             <div className="space-y-2">
               <Label htmlFor="reason" className="text-sm font-medium">
-                Help us improve (optional)
+                {`Help us improve (optional)`}
               </Label>
               <Textarea
                 id="reason"
@@ -209,12 +210,12 @@ function UnsubscribeContent() {
           {/* Info Box */}
           <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-900">
             <p className="text-sm font-semibold mb-2 text-blue-900 dark:text-blue-100">
-              💡 Did you know?
+              {`💡 Did you know?`}
             </p>
             <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-              <li>• We send only 1-2 emails per week</li>
-              <li>• You get exclusive content first</li>
-              <li>• No spam, ever. We promise!</li>
+              <li>{`• We send only 1-2 emails per week`}</li>
+              <li>{`• You get exclusive content first`}</li>
+              <li>{`• No spam, ever. We promise!`}</li>
             </ul>
           </div>
 
