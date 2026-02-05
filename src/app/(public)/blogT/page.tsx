@@ -1,6 +1,6 @@
 import BlogListClient from "@/components/BlogT/BlogListClient";
 
-export const revalidate = 86400; // regenerate once per day
+export const revalidate = 604800; // regenerate once per week
 
 async function getInitialBlogs() {
   const res = await fetch(
@@ -21,8 +21,9 @@ export default async function BlogList() {
             Discover insights, tutorials, and updates
           </p>
         </div>
-
-        <BlogListClient initialData={initialData} />
+        
+          <BlogListClient initialData={initialData} />
+        
       </div>
     </div>
   );

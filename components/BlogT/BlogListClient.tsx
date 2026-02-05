@@ -14,7 +14,7 @@ import {
   FaChevronRight,
   FaTimes,
 } from "react-icons/fa";
-import { useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function useDebounce<T>(value: T, delay: number): T {
@@ -54,11 +54,7 @@ type ApiResponse = {
   };
 };
 
-export default function BlogListClient({
-  initialData,
-}: {
-  initialData: ApiResponse;
-}) {
+function BlogListContent({ initialData }: { initialData: ApiResponse }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -198,24 +194,7 @@ export default function BlogListClient({
         </div>
       )}
 
-      {loading ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[...Array(9)].map((_, i) => (
-            <Card key={i} className="overflow-hidden">
-              <Skeleton className="h-48 w-full" />
-              <CardContent className="p-4 space-y-3">
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
-                <div className="flex gap-2">
-                  <Skeleton className="h-5 w-16" />
-                  <Skeleton className="h-5 w-16" />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : blogs.length === 0 ? (
+      {blogs.length === 0 ? (
         <Card className="p-12">
           <div className="text-center">
             <h3 className="text-2xl font-semibold mb-2">No blogs found</h3>
@@ -342,5 +321,32 @@ export default function BlogListClient({
         </div>
       )}
     </>
+  );
+}
+
+export default function BlogListClient({ initialData }: { initialData: any }) {
+  return (
+    <Suspense
+      fallback={
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[...Array(9)].map((_, i) => (
+            <Card key={i} className="overflow-hidden">
+              <Skeleton className="h-48 w-full" />
+              <CardContent className="p-4 space-y-3">
+                <Skeleton className="h-6 w-3/4" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+                <div className="flex gap-2">
+                  <Skeleton className="h-5 w-16" />
+                  <Skeleton className="h-5 w-16" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      }
+    >
+      <BlogListContent initialData={initialData} />
+    </Suspense>
   );
 }
