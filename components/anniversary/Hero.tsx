@@ -156,7 +156,7 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-12 justify-center items-center">
           <Magnet padding={200} disabled={false} magnetStrength={5}>
             <button className="hover:cursor-pointer w-44 h-10 px-3.5 sm:w-auto bg-[#8B7355] text-white rounded-full font-medium hover:bg-[#6B5540] transition-all duration-300 hover:scale-105 shadow-lg">
-              <Link href="https://www.aampanna.net">Work with us</Link>
+              <Link href="/home">Work with us</Link>
             </button>
           </Magnet>
 
