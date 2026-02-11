@@ -493,7 +493,7 @@ class App {
       },
       {
         image: `/aniversary/journey/04.jpeg`,
-        text: 'Feature'
+        text: 'Featured'
       },
       {
         image: `/aniversary/journey/05.jpeg`,

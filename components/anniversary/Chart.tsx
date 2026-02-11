@@ -24,28 +24,33 @@ const animationConfig = {
   glowWidth: 500,
 };
 
+
 const chartData = [
-  { month: "January", desktop: 342, mobile: 245 },
-  { month: "February", desktop: 876, mobile: 654 },
-  { month: "March", desktop: 512, mobile: 387 },
-  { month: "April", desktop: 629, mobile: 521 },
-  { month: "May", desktop: 458, mobile: 412 },
-  { month: "June", desktop: 781, mobile: 598 },
-  { month: "July", desktop: 394, mobile: 312 },
-  { month: "August", desktop: 925, mobile: 743 },
-  { month: "September", desktop: 647, mobile: 489 },
-  { month: "October", desktop: 532, mobile: 476 },
-  { month: "November", desktop: 803, mobile: 687 },
-  { month: "December", desktop: 271, mobile: 900 },
+  { period: "Feb 2024", organic: 14000, paid: 18000 },
+  { period: "Apr 2024", organic: 26000, paid: 21000 },
+  { period: "Jun 2024", organic: 48000, paid: 38000 },
+  { period: "Aug 2024", organic: 70000, paid: 50000 },
+  { period: "Oct 2024", organic: 98000, paid: 72000 },
+  { period: "Dec 2024", organic: 88000, paid: 62000 },
+
+  { period: "Feb 2025", organic: 190000, paid: 145000 },
+  { period: "Apr 2025", organic: 270000, paid: 205000 },
+  { period: "Jun 2025", organic: 350000, paid: 260000 },
+  { period: "Aug 2025", organic: 520000, paid: 400000 },
+  { period: "Oct 2025", organic: 690000, paid: 540000 },
+  { period: "Dec 2025", organic: 840000, paid: 680000 },
+
+  { period: "Jan 2026", organic: 1020000, paid: 820000 },
 ];
+
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "organic",
     color: "var(--chart-1)",
   },
   mobile: {
-    label: "Mobile",
+    label: "paid",
     color: "var(--chart-2)",
   },
 } satisfies ChartConfig;
@@ -63,11 +68,11 @@ export function AnimatedHighlightedAreaChart() {
             className="text-green-500 bg-green-500/10 border-none ml-2"
           >
             <TrendingUp className="h-4 w-4" />
-            <span>+5.2%</span>
+            <span>+4.63%</span>
           </Badge>
         </CardTitle>
         <CardDescription>
-          Showing total impression for the last 6 months
+          Showing total impressions for the year 2024-2026.
         </CardDescription>
       </CardHeader>
       
@@ -81,7 +86,7 @@ export function AnimatedHighlightedAreaChart() {
           >
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis
-              dataKey="month"
+              dataKey="period"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -149,7 +154,7 @@ export function AnimatedHighlightedAreaChart() {
               )}
             </defs>
             <Area
-              dataKey="mobile"
+              dataKey="organic"
               type="natural"
               fill={"url(#animated-highlighted-grad-mobile)"}
               fillOpacity={0.4}
@@ -159,7 +164,7 @@ export function AnimatedHighlightedAreaChart() {
               mask="url(#animated-highlighted-mask)"
             />
             <Area
-              dataKey="desktop"
+              dataKey="paid"
               type="natural"
               fill={"url(#animated-highlighted-grad-desktop)"}
               fillOpacity={0.4}
