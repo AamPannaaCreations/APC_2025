@@ -127,7 +127,7 @@ const Navbar = () => {
           <div className="text-center flex flex-row items-center justify-center">
             <Image
               src="/new-banner.png"
-              alt='Best Marketing Agency in India'
+              alt="Best Marketing Agency in India"
               width={40}
               height={20}
               priority
@@ -135,7 +135,10 @@ const Navbar = () => {
             />
             <h3 className="font-bold text-gray-800 text-base md:text-xl ml-2">
               Qurious about Workshop? |
-              <Link href="/workshop" className="hover:underline ml-2 animate-pulse text-red-600 font-bold">
+              <Link
+                href="/workshop"
+                className="hover:underline ml-2 animate-pulse text-red-600 font-bold"
+              >
                 Join Now
               </Link>
             </h3>
@@ -146,7 +149,7 @@ const Navbar = () => {
           <div className="flex justify-between items-center h-18 font-semibold">
             {/* Logo */}
             <Link
-              href="/"
+              href="/home"
               className="flex items-center space-x-2 flex-shrink-0"
             >
               <Image
@@ -161,9 +164,9 @@ const Navbar = () => {
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-6 lg:space-x-8 font-bricolage ">
               <Link
-                href="/"
+                href="/home"
                 className={`flex items-center gap-2  text-lg font-extralight hover:font-semibold transition-colors hover:text-primary ${
-                  isActive("/") ? "text-primary" : "text-muted-foreground"
+                  isActive("/home") ? "text-primary" : "text-muted-foreground"
                 }`}
               >
                 <HiHome className="w-5 h-5" />
@@ -351,7 +354,7 @@ const Navbar = () => {
           <div className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             {/* Home Link */}
             <Link
-              href="/"
+              href="/home"
               onClick={closeMobileMenu}
               className={`group flex items-center px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 transform hover:scale-[1.02] ${
                 isActive("/")
@@ -377,8 +380,21 @@ const Navbar = () => {
               <span className="flex-1">Services</span>
             </Link>
 
+             <Link
+              href="/about"
+              onClick={closeMobileMenu}
+              className={`group flex items-center px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 transform hover:scale-[1.02] ${
+                isActive("/about")
+                  ? "text-primary bg-accent shadow-sm"
+                  : "text-muted-foreground hover:text-primary hover:bg-accent"
+              }`}
+            >
+              <HiCog className="w-5 h-5 mr-3" />
+              <span className="flex-1">Our Story</span>
+            </Link>
+
             {/* Tool Kit Dropdown */}
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <button
                 onClick={toggleToolkit}
                 className={`group flex items-center w-full px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
@@ -394,10 +410,10 @@ const Navbar = () => {
                     isToolkitExpanded ? "rotate-180" : ""
                   }`}
                 />
-              </button>
+              </button> */}
 
-              {/* Toolkit Submenu */}
-              {isToolkitExpanded && (
+            {/* Toolkit Submenu */}
+            {/* {isToolkitExpanded && (
                 <div className="ml-4 space-y-1 animate-slideDown">
                   {toolkitItems.map((item) => (
                     <Link
@@ -413,8 +429,8 @@ const Navbar = () => {
                     </Link>
                   ))}
                 </div>
-              )}
-            </div>
+              )} */}
+            {/* </div> */}
 
             {/* Team Link */}
             <Link

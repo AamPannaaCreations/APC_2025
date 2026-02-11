@@ -1,6 +1,6 @@
 "use client";
 
-import CircularGallery from "@/components/CircularGallery";
+import CircularGallery from "@/components/anniversary/CircularGallery";
 import { RetroGrid } from "@/components/ui/retro-grid";
 import { isMobile } from 'react-device-detect';
 

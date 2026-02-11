@@ -11,7 +11,7 @@ const Footer = () => {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   const navigationLinks = [
-    { name: "Home", href: "/" },
+    { name: "Home", href: "/home" },
     { name: "Services", href: "/services" },
     { name: "Our Story", href: "/about" },
     { name: "Our Team", href: "/team" },

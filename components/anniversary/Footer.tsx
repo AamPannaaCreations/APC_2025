@@ -35,12 +35,12 @@ export default function Footer() {
             © 2024 - {new Date().getFullYear()} Aam Pannaa Creations. All Right Reserved
           </p>
           <div className="flex gap-8">
-            <a href="#" className="text-[#5B4100] text-sm hover:underline transition-all">
+            <Link href="/privacy-policy" className="text-[#5B4100] text-sm hover:underline transition-all">
               Privacy Policy
-            </a>
-            <a href="#" className="text-[#5B4100] text-sm hover:underline transition-all">
-              Terms of Service
-            </a>
+            </Link>
+            <Link href="/faqs" className="text-[#5B4100] text-sm hover:underline transition-all">
+              FAQs
+            </Link>
           </div>
         </div>
       </div>

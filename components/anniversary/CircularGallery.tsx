@@ -492,10 +492,6 @@ class App {
         text: 'Featured'
       },
       {
-        image: `/aniversary/journey/04.jpeg`,
-        text: 'Featured'
-      },
-      {
         image: `/aniversary/journey/05.jpeg`,
         text: 'Podcast'
       },

@@ -11,7 +11,7 @@ interface Item {
   time: string;
 }
 
-const notifications = [
+let notifications = [
   {
     name: "Buildspace Member",
     description: "Startup program participant",
@@ -126,7 +126,7 @@ const notifications = [
   },
 ];
 
-// notifications = Array.from({ length: 10 }, () => notifications).flat();
+notifications = Array.from({ length: 10 }, () => notifications).flat();
 
 const Notification = ({ name, description, icon, color, time }: Item) => {
   return (
@@ -169,7 +169,7 @@ export function AnimatedListDemo({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative flex h-[100px] lg:h-[500px] w-full flex-col px-4 overflow-auto",
+        "relative flex h-[100px] lg:h-[500px] w-full flex-col px-4 overflow-hidden",
         className,
       )}
     >
