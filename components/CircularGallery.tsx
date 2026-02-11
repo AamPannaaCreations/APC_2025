@@ -480,52 +480,68 @@ class App {
   ) {
     const defaultItems = [
       {
-        image: `https://picsum.photos/seed/1/800/600?grayscale`,
-        text: 'Bridge'
+        image: `/aniversary/journey/01.jpeg`,
+        text: 'Newspaper feature'
       },
       {
-        image: `https://picsum.photos/seed/2/800/600?grayscale`,
-        text: 'Desk Setup'
+        image: `/aniversary/journey/02.jpeg`,
+        text: 'Old clients'
       },
       {
-        image: `https://picsum.photos/seed/3/800/600?grayscale`,
-        text: 'Waterfall'
+        image: `/aniversary/journey/03.jpeg`,
+        text: 'Featured'
       },
       {
-        image: `https://picsum.photos/seed/4/800/600?grayscale`,
-        text: 'Strawberries'
+        image: `/aniversary/journey/04.jpeg`,
+        text: 'Feature'
       },
       {
-        image: `https://picsum.photos/seed/5/800/600?grayscale`,
-        text: 'Deep Diving'
+        image: `/aniversary/journey/05.jpeg`,
+        text: 'Podcast'
       },
       {
-        image: `https://picsum.photos/seed/16/800/600?grayscale`,
-        text: 'Train Track'
+        image: `/aniversary/journey/06.jpeg`,
+        text: 'Client review'
       },
       {
-        image: `https://picsum.photos/seed/17/800/600?grayscale`,
-        text: 'Santorini'
+        image: `/aniversary/journey/07.jpeg`,
+        text: 'Client review'
       },
       {
-        image: `https://picsum.photos/seed/8/800/600?grayscale`,
-        text: 'Blurry Lights'
+        image: `/aniversary/journey/08.jpeg`,
+        text: 'USA'
       },
       {
-        image: `https://picsum.photos/seed/9/800/600?grayscale`,
-        text: 'New York'
+        image: `/aniversary/journey/09.jpeg`,
+        text: 'USA'
       },
       {
-        image: `https://picsum.photos/seed/10/800/600?grayscale`,
-        text: 'Good Boy'
+        image: `/aniversary/journey/10.jpeg`,
+        text: 'Coffee With Intern'
       },
       {
-        image: `https://picsum.photos/seed/21/800/600?grayscale`,
-        text: 'Coastline'
+        image: `/aniversary/journey/11.jpeg`,
+        text: 'Team Diwali Virtual Meetup'
       },
       {
-        image: `https://picsum.photos/seed/12/800/600?grayscale`,
-        text: 'Palm Trees'
+        image: `/aniversary/journey/12.jpeg`,
+        text: 'Work From Cafe'
+      },
+      {
+        image: `/aniversary/journey/13.jpeg`,
+        text: 'LinkedIn Impressions Milestone'
+      },
+      {
+        image: `/aniversary/journey/14.jpeg`,
+        text: 'USA trip ( Venture Capital)'
+      },
+      {
+        image: `/aniversary/journey/15.jpeg`,
+        text: 'Team Discussion'
+      },
+      {
+        image: `/aniversary/journey/16.jpeg`,
+        text: 'As a judge to NMIMS'
       }
     ];
     const galleryItems = items && items.length ? items : defaultItems;
