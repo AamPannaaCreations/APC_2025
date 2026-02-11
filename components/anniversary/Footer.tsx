@@ -23,7 +23,7 @@ export default function Footer() {
             and momentum.
           </p>
           <button className="px-10 py-3 bg-[#8B7355] text-white rounded-full font-medium hover:bg-[#6B5540] transition-all duration-300 hover:scale-105 shadow-lg">
-              <Link href="https://www.aampanna.net">
+              <Link href="/home">
               Work with us
               </Link>
           </button>
