@@ -13,7 +13,7 @@ import "react-quill/dist/quill.snow.css";
 // No Need to validate each blog 
 // export const revalidate = 604800; 
 
-type Blog = {
+interface Blog {
   _id: string;
   title: string;
   description: string;

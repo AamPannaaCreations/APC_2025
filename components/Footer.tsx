@@ -2,14 +2,10 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import {
-  Linkedin,
-  Instagram,
-  Mail,
-  MapPin,
-} from "lucide-react";
+import { Linkedin, Instagram, Mail, MapPin } from "lucide-react";
 import Link from "next/link";
-import SubscribeForm from '@/components/SubscribeForm'
+import SubscribeForm from "@/components/SubscribeForm";
+import { Separator } from "@/components/ui/separator";
 
 const Footer = () => {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
@@ -30,19 +26,23 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Linkedin, href: "https://www.linkedin.com/company/aam-pannaa-creations/", name: "LinkedIn" },
-    { icon: Instagram, href: "https://www.instagram.com/aampannaacreations/", name: "Instagram" },
+    {
+      icon: Linkedin,
+      href: "https://www.linkedin.com/company/aam-pannaa-creations/",
+      name: "LinkedIn",
+    },
+    {
+      icon: Instagram,
+      href: "https://www.instagram.com/aampannaacreations/",
+      name: "Instagram",
+    },
   ];
 
   return (
     // < footer className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
     <footer className="relative text-black overflow-hidden">
       {/* Animated background elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-500 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/3 w-20 h-20 bg-cyan-500 rounded-full blur-2xl animate-pulse delay-500"></div>
-      </div>
+<Separator />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
         {/* Main content */}
@@ -82,11 +82,14 @@ const Footer = () => {
 
             {/* Contact info */}
             <div className="space-y-3">
-              <a 
+              <a
                 href="mailto:operations@aampanna.net"
                 className="flex items-center space-x-3 text-black hover:text-blue-600 transition-colors duration-200 group"
               >
-                <Mail size={18} className="group-hover:scale-110 transition-transform duration-200" />
+                <Mail
+                  size={18}
+                  className="group-hover:scale-110 transition-transform duration-200"
+                />
                 <span className="hover:underline">operations@aampanna.net</span>
               </a>
 
@@ -176,31 +179,12 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-
-          {/* Newsletter signup */}
-          {/* <div className="lg:col-span-1"> <SubscribeForm source="footer" /> </div> */}
         </div>
 
         {/* Newsletter section */}
-        {/* <div className=" rounded-2xl p-8 mb-12 border border-gray-700/50 backdrop-blur-sm"> */}
-          <div className="max-w-2xl p-8">
-            {/* <h4 className="text-2xl font-bold text-white mb-4">Stay in the loop</h4>
-            <p className="text-gray-300 mb-6">
-              Get the latest updates on our projects, insights, and creative process delivered to your inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="flex-1 px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-              />
-              <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
-                Subscribe
-              </button>
-            </div> */}
-
-            <SubscribeForm source="footer" />
-          </div>
+        <div className="max-w-2xl flex justify-center items-center flex-col mx-auto">
+          <SubscribeForm source="footer" />
+        </div>
         {/* </div> */}
 
         {/* Bottom section */}
@@ -209,8 +193,8 @@ const Footer = () => {
             {/* Copyright */}
             <div className="text-black">
               <p>
-                &copy; {new Date().getFullYear()} Design Studio. All rights
-                reserved.
+                &copy; 2024 - {new Date().getFullYear()} Aam Pannaa Creations.
+                All rights reserved.
               </p>
             </div>
 
@@ -225,26 +209,24 @@ const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`group relative w-12 h-12 bg-white border-2 border-gray-300 rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:-translate-y-1 ${
-                      social.name === 'LinkedIn'
-                        ? 'hover:bg-[#0077B5] hover:border-[#0077B5]'
-                        : 'hover:bg-gradient-to-br hover:from-[#E4405F] hover:via-[#E1306C] hover:to-[#833AB4] hover:border-transparent'
+                      social.name === "LinkedIn"
+                        ? "hover:bg-[#0077B5] hover:border-[#0077B5]"
+                        : "hover:bg-gradient-to-br hover:from-[#E4405F] hover:via-[#E1306C] hover:to-[#833AB4] hover:border-transparent"
                     }`}
                     title={social.name}
                   >
                     <social.icon
                       size={20}
                       className={`transition-colors duration-300 ${
-                        social.name === 'LinkedIn'
-                          ? 'text-[#0077B5] group-hover:text-white'
-                          : 'text-[#E4405F] group-hover:text-white'
+                        social.name === "LinkedIn"
+                          ? "text-[#0077B5] group-hover:text-white"
+                          : "text-[#E4405F] group-hover:text-white"
                       }`}
                     />
                   </a>
                 ))}
               </div>
             </div>
-
-
           </div>
         </div>
       </div>

@@ -1,16 +1,29 @@
 import BlogListClient from "@/components/BlogT/BlogListClient";
+import { getInitialBlogs } from "@/lib/workshop/getInitialBlogs";
 
 export const revalidate = 604800; // regenerate once per week
 
-async function getInitialBlogs() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/blogs?page=1&limit=9`,
-  );
-  return res.json();
-}
-
 export default async function BlogList() {
-  const initialData = await getInitialBlogs();
+  const data = await getInitialBlogs({ page: 1, limit: 9 });
+
+  const initialData = {
+    blogs: data.blogs.map((blog) => ({
+      _id: String(blog._id),
+      title: blog.title,
+      slug: blog.slug,
+      description: blog.description,
+      mainImage: blog.mainImage,
+      tags: blog.tags,
+      createdAt: new Date(blog.createdAt).toISOString(),
+    })),
+    pagination: {
+      page: data.pagination.page,
+      limit: data.pagination.limit,
+      total: data.pagination.total,
+      totalPages: data.pagination.totalPages,
+      hasMore: data.pagination.hasMore,
+    },
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -21,9 +34,8 @@ export default async function BlogList() {
             Discover insights, tutorials, and updates
           </p>
         </div>
-        
-          <BlogListClient initialData={initialData} />
-        
+
+        <BlogListClient initialData={initialData} />
       </div>
     </div>
   );

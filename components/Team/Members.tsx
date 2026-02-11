@@ -239,7 +239,9 @@ export default function Members() {
       </section>
 
       {/* Creative Team Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#FFFFFF] to-[#FF69B4]">
+      {/* <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#FFFFFF] to-[#dd8ab4]"> */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+
         <div className="max-w-6xl mx-auto font-bricolage ">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -253,6 +255,25 @@ export default function Members() {
 
           <div className="flex flex-wrap justify-center gap-12 md:gap-8">
             {teamData.creative.map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#FFFFFF] to-[#FF69B4]">
+        <div className="max-w-6xl mx-auto font-bricolage ">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Business Development Team
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-xl">
+              Driving growth and forging strategic partnerships to expand our reach
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-12 md:gap-8">
+            {teamData.businessDevelopment.map((member, index) => (
               <TeamMemberCard key={member.id} member={member} index={index} />
             ))}
           </div>

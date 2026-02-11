@@ -8,7 +8,6 @@ export interface TeamMember {
   description: string;
 }
 
-
 export interface TeamData {
   companyHead: TeamMember[];
   leadership: TeamMember[];
@@ -47,13 +46,21 @@ export const teamData = {
     },
   ],
   leadership: [
+    // {
+    //   id: 4,
+    //   name: "Godhuli Vyas",
+    //   role: "Operation & Client Retention manager",
+    //   image: "/team/godhuli.jpg",
+    //   linkedin: "https://www.linkedin.com/in/godhuli-vyas-4b7128253/",
+
+    //   description: "",
+    // },
     {
       id: 4,
-      name: "Godhuli Vyas",
-      role: "Operation & Client Retention manager",
-      image: "/team/godhuli.jpg",
-      linkedin: "https://www.linkedin.com/in/godhuli-vyas-4b7128253/",
-
+      name: "Priyanshi Agrawal",
+      role: "Founder's Office Associate",
+      image: "/team/Priyanshi-Agrawal.png",
+      linkedin: "http://www.linkedin.com/in/priyanshi-agrawal-58830b282",
       description: "",
     },
     {
@@ -82,12 +89,22 @@ export const teamData = {
       linkedin: "https://www.linkedin.com/in/binith-kumar",
       description: "",
     },
+    // {
+    //   id: 9,
+    //   name: "Abhirami. M",
+    //   role: "UI/UX design intern",
+    //   image: "/team/abhirami.jpg",
+    //   linkedin: "https://www.linkedin.com/in/abhirami-m-35909b19b",
+    //   description: "",
+    // },
+  ],
+  businessDevelopment: [
     {
-      id: 9,
-      name: "Abhirami. M",
-      role: "UI/UX design intern",
-      image: "/team/abhirami.jpg",
-      linkedin: "https://www.linkedin.com/in/abhirami-m-35909b19b",
+      id: 7,
+      name: "Nilesh Kumar Gupta ",
+      role: "Business Development Associate",
+      image: "/team/Nilesh-kumar-gupta.jpg",
+      linkedin: "https://www.linkedin.com/in/nilesh-kumar-gupta-3b589a25a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
       description: "",
     },
   ],

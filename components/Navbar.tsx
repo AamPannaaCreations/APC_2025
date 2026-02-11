@@ -16,7 +16,6 @@ import {
   HiChevronDown,
 } from "react-icons/hi";
 
-
 const Navbar = () => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -122,11 +121,27 @@ const Navbar = () => {
 
   return (
     <>
-      {/* <nav className="relative top-0 left-0 right-0 z-50">
-        <div className=" mx-auto px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#FFFDE8] to-[#FFFBD2]  ">
-          <div className="flex justify-between items-center h-18 font-semibold "> */}
+      {/* <WorkshopBanner /> */}
+      <nav className="fixed left-0 right-0 z-[50] bg-gradient-to-r from-[#FFFDE8] to-[#FFFBD2]">
+        <div className="container mx-auto px-4 h-12 relative flex items-center justify-center py-2">
+          <div className="text-center flex flex-row items-center justify-center">
+            <Image
+              src="/new-banner.png"
+              alt='Best Marketing Agency in India'
+              width={40}
+              height={20}
+              priority
+              className="animate-pulse"
+            />
+            <h3 className="font-bold text-gray-800 text-base md:text-xl ml-2">
+              Qurious about Workshop? |
+              <Link href="/workshop" className="hover:underline ml-2 animate-pulse text-red-600 font-bold">
+                Join Now
+              </Link>
+            </h3>
+          </div>
+        </div>
 
-      <nav className="fixed top-[52px] left-0 right-0 z-50 bg-gradient-to-r from-[#FFFDE8] to-[#FFFBD2]">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-18 font-semibold">
             {/* Logo */}

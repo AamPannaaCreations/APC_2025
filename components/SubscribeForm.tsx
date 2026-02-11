@@ -12,7 +12,10 @@ type SubscribeFormProps = {
   className?: string;
 };
 
-export default function SubscribeForm({ source = "website", className }: SubscribeFormProps) {
+export default function SubscribeForm({
+  source = "website",
+  className,
+}: SubscribeFormProps) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -53,16 +56,19 @@ export default function SubscribeForm({ source = "website", className }: Subscri
   };
 
   return (
-    <Card className={`p-8 ${className}`}>
+    <Card className={`p-8 border-none shadow-none ${className}`}>
       <div className="max-w-xl mx-auto text-center space-y-6">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
           <FaEnvelope className="text-3xl text-primary" />
         </div>
-        
+
         <div>
-          <h3 className="text-2xl font-bold mb-2">Subscribe to Our Newsletter</h3>
+          <h3 className="text-2xl font-bold mb-2">
+            Subscribe to Our Newsletter
+          </h3>
           <p className="text-muted-foreground">
-            Get the latest updates, articles, and resources delivered directly to your inbox.
+            Get the latest updates, articles, and resources delivered directly
+            to your inbox.
           </p>
         </div>
 
@@ -74,7 +80,7 @@ export default function SubscribeForm({ source = "website", className }: Subscri
             onChange={(e) => setName(e.target.value)}
             className="h-12"
           />
-          
+
           <Input
             type="email"
             placeholder="Your email address"
@@ -87,7 +93,7 @@ export default function SubscribeForm({ source = "website", className }: Subscri
           <Button
             type="submit"
             disabled={loading}
-            className="w-full h-12 text-base"
+            className="w-full h-12 text-base hover:cursor-pointer "
           >
             {loading ? (
               "Subscribing..."
@@ -101,7 +107,8 @@ export default function SubscribeForm({ source = "website", className }: Subscri
         </form>
 
         <p className="text-xs text-muted-foreground">
-          By subscribing, you agree to our Privacy Policy and consent to receive updates.
+          By subscribing, you agree to our Privacy Policy and consent to receive
+          updates.
         </p>
       </div>
     </Card>

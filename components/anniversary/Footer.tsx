@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from 'react'
 
 export default function Footer() {
@@ -22,14 +23,16 @@ export default function Footer() {
             and momentum.
           </p>
           <button className="px-10 py-3 bg-[#8B7355] text-white rounded-full font-medium hover:bg-[#6B5540] transition-all duration-300 hover:scale-105 shadow-lg">
-            Work with us
+              <Link href="/home">
+              Work with us
+              </Link>
           </button>
         </div>
 
         {/* Footer Bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-[#5B4100]/20 gap-4">
           <p className="text-[#5B4100] text-sm">
-            © {new Date().getFullYear()} Aam Pannaa Creations. All Right Reserved
+            © 2024 - {new Date().getFullYear()} Aam Pannaa Creations. All Right Reserved
           </p>
           <div className="flex gap-8">
             <a href="#" className="text-[#5B4100] text-sm hover:underline transition-all">

@@ -1,5 +1,5 @@
 import Image from "next/image";
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 
 const About = () => {
   return (
@@ -25,7 +25,6 @@ const About = () => {
             {' "Turning bland into brand, the Aam Pannaa way!" '}
           </p>
         </div>
-
 
         {/* The Spark Section */}
         <section className="max-w-7xl mb-16 mx-auto font-bricolage ">

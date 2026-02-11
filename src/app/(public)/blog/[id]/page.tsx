@@ -7,7 +7,6 @@ import { blogData } from "@/data/blogData";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 
-
 export interface BlogPost {
   id: number;
   title: string;
@@ -25,7 +24,6 @@ export interface BlogPost {
   }[];
 }
 
-
 const BlogPostPage = () => {
   const router = useRouter();
   const params = useParams();
@@ -36,7 +34,7 @@ const BlogPostPage = () => {
     const id = params?.id;
     if (id && typeof id === "string") {
       const foundPost = blogData.find(
-        (post: BlogPost) => post.id === parseInt(id)
+        (post: BlogPost) => post.id === parseInt(id),
       );
       if (foundPost) {
         setPost(foundPost);
@@ -48,16 +46,13 @@ const BlogPostPage = () => {
     }
   }, [params?.id, router]);
 
-  
   const handleBack = (): void => {
     router.back();
   };
 
-
   const handleBackToBlog = (): void => {
     router.push("/blog");
   };
-
 
   if (loading) {
     return (
@@ -248,6 +243,5 @@ const BlogPostPage = () => {
     </div>
   );
 };
-
 
 export default BlogPostPage;

@@ -34,8 +34,8 @@ export async function GET(request: NextRequest) {
 
     // Fetch blogs
     const blogs = await Blog.find(query)
+    .select("title slug description mainImage tags createdAt")
       .sort({ createdAt: -1 })
-      .select("title slug description mainImage tags createdAt")
       .skip(skip)
       .limit(limit)
       .lean();
