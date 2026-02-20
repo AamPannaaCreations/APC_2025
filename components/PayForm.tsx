@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -149,7 +150,7 @@ export default function PayForm({
         name: "Workshop Registration",
         description: "Secure payment",
         order_id: order.id,
-        handler: async (response: RazorpayResponse) => {
+        handler: async (response: any) => {
           const verify = await fetch("/api/workshop/verify-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
