@@ -149,7 +149,7 @@ export default function PayForm({
         name: "Workshop Registration",
         description: "Secure payment",
         order_id: order.id,
-        handler: async (response: any) => {
+        handler: async (response: RazorpayResponse) => {
           const verify = await fetch("/api/workshop/verify-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
