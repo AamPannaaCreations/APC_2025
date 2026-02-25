@@ -50,6 +50,10 @@ const workshopSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  meetingLink: {
+    type: String,
+    required: true
   }
 });
 
