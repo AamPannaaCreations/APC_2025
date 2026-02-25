@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -19,7 +18,9 @@ type RazorpayOptions = {
   name: string;
   description?: string;
   order_id?: string;
-
+  notes?:{
+    workshopId: string;
+  }
   handler: (response: RazorpayResponse) => void;
 
   prefill?: {
@@ -93,6 +94,7 @@ export default function PayForm({
   onClose,
 }: PayFormProps) {
   const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
 
   /* Prevent ESC key closing during payment */
   useEffect(() => {
@@ -106,6 +108,28 @@ export default function PayForm({
     document.addEventListener("keydown", handleKeyDown, true);
     return () => document.removeEventListener("keydown", handleKeyDown, true);
   }, []);
+
+  const startPaymentStatusCheck = (orderId: string, toastId: string) => {
+    setVerifying(true);
+
+    const interval = setInterval(async () => {
+      const res = await fetch(`/api/workshop/status?orderId=${orderId}`);
+      const data = await res.json();
+
+      if (data.status === "PAID") {
+        clearInterval(interval);
+        setVerifying(false);
+        toast.success("Payment confirmed 🎉", { id: toastId });
+        onClose();
+      }
+
+      if (data.status === "FAILED") {
+        clearInterval(interval);
+        setVerifying(false);
+        toast.error("Payment failed", { id: toastId });
+      }
+    }, 2000);
+  };
 
   const handlePay = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -127,118 +151,63 @@ export default function PayForm({
       return;
     }
 
+    // This need to be backend Verify first then open razorpay form
     try {
-      // Create order
       const res = await fetch("/api/workshop/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, workshopId }),
+        body: JSON.stringify({
+          workshopId,
+          name,
+          email,
+          phone,
+        }),
       });
 
       if (!res.ok) {
-        toast.error("Unable to create order");
-        setLoading(false);
-        return;
+        throw new Error("Order creation failed");
       }
 
-      const order = await res.json();
+      const order: { id: string; amount: number } = await res.json();
 
-      const options = {
+      const rzp = new window.Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+        order_id: order.id,
         amount: order.amount,
         currency: "INR",
         name: "Workshop Registration",
-        description: "Secure payment",
-        order_id: order.id,
-        handler: async (response: any) => {
-          const verify = await fetch("/api/workshop/verify-payment", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(response),
-          });
-
-          const result = await verify.json();
-
-          if (result.success) {
-            toast.success("Payment successful 🎉");
-            onClose();
-          } else {
-            toast.error("Payment verification failed");
-          }
+        description: "Secure enrollment",
+        prefill: { name, email, contact: phone },
+        notes: {
+          workshopId: workshopId,
         },
+        handler: () => {
+          const toastID = toast.loading("Confirming payment...");
+          startPaymentStatusCheck(order.id, toastID);
+        },
+
         modal: {
           ondismiss: () => toast.error("Payment cancelled"),
+          escape: false,
+          confirm_close: true,
         },
-        prefill: { name, email, contact: phone },
+
         theme: { color: "#3B82F6" },
-      };
 
-      const rzp = new window.Razorpay(options);
+
+      });
+
+      rzp.on("payment.failed", (response) => {
+        toast.error(
+          response.error.description || "Payment failed. Please try again.",
+        );
+        onClose();
+      });
+
       rzp.open();
-    } catch (error) {
-      toast.error("Payment failed. Please try again.");
-    } finally {
-      setLoading(false);
+    } catch {
+      toast.error("Unable to start payment");
     }
-
-    //This need to be backend Verify first then open razorpay form
-    // try {
-    //   const res = await fetch("/api/workshop/create-order", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       workshopId,
-    //       name,
-    //       email,
-    //       phone,
-    //     }),
-    //   });
-
-    //   if (!res.ok) {
-    //     throw new Error("Order creation failed");
-    //   }
-
-    //   const order: { id: string; amount: number } = await res.json();
-
-    //   const rzp = new window.Razorpay({
-    //     key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-    //     order_id: order.id,
-    //     amount: order.amount,
-    //     currency: "INR",
-    //     name: "Workshop Registration",
-    //     description: "Secure enrollment",
-    //     prefill: { name, email, contact: phone },
-
-    //     handler: () => {
-    //       toast.success("Payment successful! 🎉");
-    //       onClose();
-    //     },
-
-    //     modal: {
-    //       ondismiss: () => {
-    //         toast.error("Payment cancelled");
-    //         onClose();
-    //       },
-    //       escape: false,
-    //       confirm_close: true,
-    //     },
-
-    //     theme: { color: "#3B82F6" },
-    //   });
-
-    //   rzp.on("payment.failed", (response) => {
-    //     toast.error(
-    //       response.error.description || "Payment failed. Please try again."
-    //     );
-    //     onClose();
-    //   });
-
-    //   rzp.open();
-    // } catch {
-    //   toast.error("Unable to start payment");
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   return (
@@ -247,7 +216,7 @@ export default function PayForm({
       onClick={(e) => e.stopPropagation()}
     >
       <div
-        className="bg-white rounded-lg w-full max-w-md p-6"
+        className="bg-white rounded-lg w-full max-w-md p-6 relative"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col gap-4 mb-6">
@@ -255,6 +224,7 @@ export default function PayForm({
             <h2 className="text-xl font-bold">Complete Payment</h2>
             <button
               onClick={onClose}
+              disabled={loading || verifying}
               className="text-gray-500 hover:text-gray-700"
             >
               <Delete />
@@ -301,6 +271,15 @@ export default function PayForm({
           </button>
         </form>
       </div>
+      {verifying && (
+        <div className="absolute inset-0 bg-white/80 flex flex-col items-center justify-center rounded-lg z-50">
+          <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full mb-3" />
+          <p className="font-semibold text-gray-700">Confirming payment...</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Please don’t close this window
+          </p>
+        </div>
+      )}
     </div>
   );
 }

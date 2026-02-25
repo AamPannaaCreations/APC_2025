@@ -1,8 +1,8 @@
 import Razorpay from "razorpay";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import {WorkshopRegistration} from "@/models/workshopRegistrations";
-import {Workshop} from "@/models/workshop";
+import { WorkshopRegistration } from "@/models/workshopRegistrations";
+import { Workshop } from "@/models/workshop";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID!,
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     name,
     email,
     phone,
-    workshopId: "workshop_001",
+    workshopId,
     razorpayOrderId: order.id,
   });
 

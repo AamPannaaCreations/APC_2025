@@ -113,6 +113,16 @@ export default function RootLayout({
           href="https://www.aampanna.net"
           hrefLang="x-default"
         />
+
+        <link
+          href="https://cdn.jsdelivr.net/npm/daisyui@5"
+          rel="stylesheet"
+          type="text/css"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"
+          async
+        />
       </Head>
 
       <body

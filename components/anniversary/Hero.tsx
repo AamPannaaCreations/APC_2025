@@ -83,10 +83,10 @@ export default function Hero() {
   }, []);
 
   const floatingIcons = [
-    { Icon: Heart, position: "top-50 right-40", delay: "0s" },
-    { Icon: Users, position: "bottom-40 right-70", delay: "0.2s" },
+    { Icon: Heart, position: "top-50 right-40", delay: "0.2s" },
+    { Icon: Users, position: "bottom-40 right-70", delay: "0.6s" },
     { Icon: Trophy, position: "bottom-45 left-96", delay: "0.6s" },
-    { Icon: Award, position: "top-40 left-60", delay: "0.8s" },
+    { Icon: Award, position: "top-40 left-60", delay: "0.2s" },
   ];
 
   return (
@@ -99,7 +99,7 @@ export default function Hero() {
           fill
           className=""
           priority
-          quality={100}
+          // quality={100}
         />
       </div>
 
@@ -167,17 +167,6 @@ export default function Hero() {
       </div>
 
       {/* Mascot at bottom */}
-      {/* 
-<div className="animate-float-in absolute bottom-0 left-1/2 transform -translate-x-1/2 z-0">
-  <Image
-    src="/aniversary/mascot.png"
-    alt="Mascot"
-    width={450}
-    height={950}
-    className="w-40 h-auto sm:w-56 md:w-72 lg:w-[450px] object-contain"
-  />
-</div> */}
-      {/* <div className="animate-float-in absolute bottom-0 left-1/2 transform -translate-x-1/2 z-0"> */}
       <div className="z-0 absolute bottom-0 md:left-1/2 md:transform md:-translate-x-1/2">
         <Image
           src="/aniversary/mascot.png"

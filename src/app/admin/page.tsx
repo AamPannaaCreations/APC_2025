@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -89,7 +88,9 @@ export default function AdminDashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Employees</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Employees
+            </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -102,7 +103,9 @@ export default function AdminDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Workshops</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Workshops
+            </CardTitle>
             <NotebookPen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -202,7 +205,9 @@ export default function AdminDashboard() {
           <CardContent className="space-y-2">
             <div className="flex justify-between">
               <span className="text-sm">Active Employees</span>
-              <span className="text-sm font-bold">{stats.employees.active}</span>
+              <span className="text-sm font-bold">
+                {stats.employees.active}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm">Inactive Employees</span>

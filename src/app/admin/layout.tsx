@@ -4,7 +4,17 @@ import { ReactNode, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { BookUser, Users2Icon , Home, NotebookPen, FileText, LogOut, Menu} from "lucide-react";
+import {
+  BookUser,
+  Users2Icon,
+  Home,
+  NotebookPen,
+  FileText,
+  LogOut,
+  Menu,
+  FolderKanban,
+  Settings,
+} from "lucide-react";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { Button } from "@/components/ui/button";
 import { AuthGuard } from "@/components/admin/authGuard";
@@ -19,17 +29,26 @@ const NAV_LINKS = [
   { name: "Workshop", href: "/admin/workshop", icon: NotebookPen },
   { name: "Blogs", href: "/admin/blog", icon: FileText },
   { name: "Subscribers", href: "/admin/subscriber", icon: BookUser },
+  { name: 'Toolkits', href: '/admin/toolkits', icon: FolderKanban },
+  { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
 interface AdminLayoutProps {
   children: ReactNode;
 }
 
-function SidebarContent({ pathname, onClose }: { pathname: string; onClose?: () => void }) {
+function SidebarContent({
+  pathname,
+  onClose,
+}: {
+  pathname: string;
+  onClose?: () => void;
+}) {
   return (
     <nav className="space-y-1 px-3 py-4">
       {NAV_LINKS.map((link) => {
-        const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+        const isActive =
+          pathname === link.href || pathname.startsWith(link.href + "/");
         return (
           <Link
             key={link.href}
@@ -39,7 +58,7 @@ function SidebarContent({ pathname, onClose }: { pathname: string; onClose?: () 
               "flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors",
               isActive
                 ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
             )}
           >
             <link.icon className="h-5 w-5" />
@@ -87,11 +106,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               {/* Mobile Menu Toggle */}
               <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
                 <SheetTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="md:hidden"
-                  >
+                  <Button variant="ghost" size="icon" className="md:hidden">
                     <Menu className="h-5 w-5" />
                     <span className="sr-only">Toggle menu</span>
                   </Button>
@@ -108,9 +123,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                       />
                     </Link>
                   </div>
-                  <SidebarContent 
-                    pathname={pathname} 
-                    onClose={() => setSidebarOpen(false)} 
+                  <SidebarContent
+                    pathname={pathname}
+                    onClose={() => setSidebarOpen(false)}
                   />
                 </SheetContent>
               </Sheet>
