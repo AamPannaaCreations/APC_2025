@@ -82,8 +82,8 @@ export default function ContentAccessForm({
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground text-center">
-            Thank you for your interest! The content should open automatically.
-            If it doesn't, please check your popup blocker.
+            {`Thank you for your interest! The content should open automatically.
+            If it doesn't, please check your popup blocker.`}
           </p>
           <Button
             onClick={() => router.push("/toolkits")}
