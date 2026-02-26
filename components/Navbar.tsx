@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaTools } from "react-icons/fa";
 
 import {
   HiHome,

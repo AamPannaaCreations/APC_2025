@@ -330,13 +330,13 @@ export default function BlogDashboard() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-2xl">Loading...</div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen">
+  //       <div className="text-2xl">Loading...</div>
+  //     </div>
+  //   );
+  // }
 
   const blogs = data?.blogs || [];
   const pagination = data?.pagination;

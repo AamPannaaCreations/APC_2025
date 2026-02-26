@@ -1,24 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { WordRotate } from "@/components/ui/word-rotate";
-import {
-  useDisclosure,
-} from "@heroui/modal";
-
 
 export default function WorkshopHero() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [size, setSize] = React.useState("lg");
-  const [scrollBehavior, setScrollBehavior] = React.useState<
-    "inside" | "normal" | "outside" | undefined
-  >("outside");
-
-  const handleOpen = (size: string) => {
-    // setSize(size);
-    onOpen();
-  };
-
   return (
     <section className="px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center">
       <div className="max-w-7xl mx-auto">
@@ -50,36 +34,6 @@ export default function WorkshopHero() {
               Join expert-led interactive sessions to master social media
               strategies, personal branding, and creative toolkits.
             </p>
-
-            <Button
-              className="text-base sm:text-lg md:text-xl hover:cursor-pointer font-bold lg:text-2xl text-black px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 w-full sm:w-auto"
-              // size={"icon"}
-              onClick={() =>
-                (
-                  document.getElementById("my_modal_5") as HTMLDialogElement
-                )?.showModal()
-              }
-            >
-              View Schedule
-            </Button>
-            <dialog
-              id="my_modal_5"
-              className="modal modal-bottom sm:modal-middle"
-            >
-              {/* Modal content */}
-              <div className="modal-box">
-                <h3 className="font-bold text-lg">Hello!</h3>
-                <p className="py-4">
-                    Stay Tuned for Upcoming workshop!!!
-                </p>
-                <div className="modal-action">
-                  <form method="dialog">
-                    {/* if there is a button in form, it will close the modal */}
-                    <button className="btn">Close</button>
-                  </form>
-                </div>
-              </div>
-            </dialog>
           </div>
 
           {/* Right Image */}
@@ -93,15 +47,6 @@ export default function WorkshopHero() {
                 className="w-full h-auto"
                 priority
               />
-              {/* <div className="absolute lg:bottom-6 lg:left-6 bottom-5 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-1 lg:p-4 md:p-4 shadow-lg">
-                <h3 className="font-bold text-gray-900 mb-1">
-                  Interactive Learning Sessions
-                </h3>
-                <p className="text-sm text-gray-600">
-                  Build real-world skills with guided sessions
-                </p>
-              </div> */}
-
               <div className="absolute lg:bottom-6 lg:left-6 bottom-5 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-2 sm:p-3 md:p-4 lg:p-4 shadow-lg max-w-[85%] sm:max-w-xs md:max-w-sm">
                 <h3 className="font-bold text-gray-900 mb-1 text-xs sm:text-sm md:text-base lg:text-lg">
                   Interactive Learning Sessions

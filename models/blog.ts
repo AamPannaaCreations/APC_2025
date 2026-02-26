@@ -20,15 +20,15 @@ const BlogSchema = new Schema<IBlog>(
     slug: { type: String, unique: true, index: true },
     description: { type: String },
     mainImage: { type: String },
-    content: { type: Object, required: true }, // Editor.js / HTML / JSON
+    content: { type: Object, required: true },
     tags: [{ type: String }],
     published: { type: Boolean, default: true },
-    author: { type: String }
-      // type: Schema.Types.ObjectId,
-      // ref: "User",
-      // required: true,
+    author: { type: String },
+    // type: Schema.Types.ObjectId,
+    // ref: "User",
+    // required: true,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.models.Blog ||
