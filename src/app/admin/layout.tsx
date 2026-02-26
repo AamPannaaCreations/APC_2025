@@ -27,9 +27,9 @@ const NAV_LINKS = [
   { name: "Dashboard", href: "/admin", icon: Home },
   { name: "Employees", href: "/admin/employee", icon: Users2Icon },
   { name: "Workshop", href: "/admin/workshop", icon: NotebookPen },
+  { name: 'Toolkits', href: '/admin/gated-content', icon: FolderKanban },
   { name: "Blogs", href: "/admin/blog", icon: FileText },
   { name: "Subscribers", href: "/admin/subscriber", icon: BookUser },
-  { name: 'Toolkits', href: '/admin/toolkits', icon: FolderKanban },
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 

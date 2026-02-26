@@ -38,6 +38,15 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
 
+    const { title, description, mainImage, content, tags } = body;
+
+    if (!title || !description || !mainImage || !content) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 },
+      );
+    }
+
     const blog = await Blog.findByIdAndUpdate(
       id,
       { ...body, updatedAt: new Date() },
@@ -47,7 +56,7 @@ export async function PUT(
     if (!blog) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
     }
-    
+
     revalidatePath(`/blogT/${blog.slug}`);
     return NextResponse.json(blog);
   } catch (error) {
