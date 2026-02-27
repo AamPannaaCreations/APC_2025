@@ -6,7 +6,9 @@ import { WorkshopTable } from "@/components/admin/workshop/workshop-table";
 import { CreateWorkshopDialog } from "@/components/admin/workshop/create-workshop-dialog";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import toast from "react-hot-toast";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Workshop {
   _id: string;
@@ -20,6 +22,7 @@ interface Workshop {
 }
 
 interface Stats {
+  loading?: boolean;
   total: number;
   upcoming: number;
   past: number;
@@ -34,10 +37,11 @@ export default function AdminWorkshopsPage() {
     past: 0,
     totalRegistrations: 0,
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchWorkshops = async () => {
+    setLoading(true);
     try {
       const response = await fetch("/api/workshop", {
         cache: "no-store",
@@ -64,6 +68,7 @@ export default function AdminWorkshopsPage() {
   }, []);
 
   const handleRefresh = async () => {
+    setLoading(true);
     setRefreshing(true);
     await fetchWorkshops();
     toast.success("Workshops refreshed");
@@ -91,13 +96,16 @@ export default function AdminWorkshopsPage() {
     }
   };
 
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Workshops</h1>
         <div className="flex gap-2">
-          <Button onClick={handleRefresh} variant="outline" disabled={refreshing}>
+          <Button
+            onClick={handleRefresh}
+            variant="outline"
+            disabled={refreshing}
+          >
             <RefreshCcw
               className={`mr-2 h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
             />
@@ -108,6 +116,7 @@ export default function AdminWorkshopsPage() {
       </div>
 
       <WorkshopStats
+        loading={loading}
         total={stats.total}
         upcoming={stats.upcoming}
         past={stats.past}
@@ -115,7 +124,16 @@ export default function AdminWorkshopsPage() {
       />
 
       <div className="rounded-lg border">
-        <WorkshopTable workshops={workshops} onDelete={handleDelete} />
+        {loading ? (
+          <div className=" h-40 flex items-center justify-center gap-4 [--radius:1.2rem]">
+            <Badge>
+              <Spinner data-icon="inline-start" />
+              Syncing
+            </Badge>
+          </div>
+        ) : (
+          <WorkshopTable workshops={workshops} onDelete={handleDelete} />
+        )}
       </div>
     </div>
   );
