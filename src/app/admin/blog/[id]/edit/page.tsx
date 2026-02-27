@@ -26,7 +26,22 @@ type PageProps = {
 export default function EditBlogPage({ params }: PageProps) {
   const router = useRouter();
   const [blogId, setBlogId] = useState<string>("");
-  const [form, setForm] = useState<BlogForm | null>(null);
+  // const [form, setForm] = useState<BlogForm | null>(null);
+  const [form, setForm] = useState<{
+    title: string;
+    description: string;
+    mainImage: string;
+    content: OutputData | null;
+    tags: string;
+  }>({
+    title: "",
+    description: "",
+    mainImage: "",
+    content: null,
+    tags: "",
+  });
+
+
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [fetching, setFetching] = useState(true);
@@ -119,6 +134,34 @@ export default function EditBlogPage({ params }: PageProps) {
     }
   };
 
+  const handleImageRemove = async () => {
+    if (!form?.mainImage) return;
+
+    const deleteToast = toast.loading("Removing image...");
+
+    try {
+      // Extract public ID from Cloudinary URL
+      // URL format: https://res.cloudinary.com/{cloud_name}/image/upload/{public_id}.{extension}
+      const urlParts = form.mainImage.split("/");
+      const lastPart = urlParts[urlParts.length - 1];
+      const publicId = lastPart.split(".")[0];
+
+      // Call delete API
+      await fetch("/api/cloudinary/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ publicId }),
+      });
+
+      setForm(prev => prev && { ...prev, mainImage: "" });
+      toast.success("Image removed successfully!", { id: deleteToast });
+    } catch (error) {
+      toast.error("Failed to remove image", { id: deleteToast });
+      console.error(error);
+    }
+  };
+
+
   // if (fetching) {
   //   return (
   //     <div className="flex items-center justify-center min-h-screen">
@@ -190,9 +233,7 @@ export default function EditBlogPage({ params }: PageProps) {
             <Button
               variant="destructive"
               size="sm"
-              onClick={() =>
-                setForm((prev) => prev && { ...prev, mainImage: "" })
-              }
+              onClick={handleImageRemove}
               className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <FaTrash className="mr-2" /> Remove
@@ -204,7 +245,7 @@ export default function EditBlogPage({ params }: PageProps) {
       <Card className="p-6">
         <BlogEditor
           form={form}
-          setForm={(newForm) => setForm(newForm)}
+          setForm={setForm}
           onSubmit={handleUpdate}
           buttonText={loading ? "Updating..." : "Update Blog Post"}
           disabled={loading || uploading}

@@ -77,13 +77,41 @@ export default function CreateBlogPage() {
       toast.success("Blog post created successfully!", { id: createToast });
       setTimeout(() => {
         router.push(`/blogT/${blog.slug}`);
-      }, 500);
+      }, 1000);
     } catch (error) {
       toast.error("Failed to create blog post", { id: createToast });
       console.error(error);
       setCreating(false);
     }
   };
+
+    const handleImageRemove = async () => {
+    if (!form.mainImage) return;
+
+    const deleteToast = toast.loading("Removing image...");
+
+    try {
+      // Extract public ID from Cloudinary URL
+      // URL format: https://res.cloudinary.com/{cloud_name}/image/upload/{public_id}.{extension}
+      const urlParts = form.mainImage.split("/");
+      const lastPart = urlParts[urlParts.length - 1];
+      const publicId = lastPart.split(".")[0];
+
+      // Call delete API
+      await fetch("/api/cloudinary/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ publicId }),
+      });
+
+      setForm(prev => ({ ...prev, mainImage: "" }));
+      toast.success("Image removed successfully!", { id: deleteToast });
+    } catch (error) {
+      toast.error("Failed to remove image", { id: deleteToast });
+      console.error(error);
+    }
+  };
+
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -147,7 +175,7 @@ export default function CreateBlogPage() {
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => setForm(prev => ({ ...prev, mainImage: "" }))}
+                  onClick={handleImageRemove}
                   className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <FaTrash className="mr-2" /> Remove
