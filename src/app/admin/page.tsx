@@ -69,14 +69,6 @@ export default function AdminDashboard() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <p>Loading dashboard...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <div>

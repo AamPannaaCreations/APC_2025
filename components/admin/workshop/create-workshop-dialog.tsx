@@ -34,6 +34,7 @@ export function CreateWorkshopDialog() {
     time: "",
     duration: "",
     platform: "Google Meet",
+    meetingLink: "",
     instructor: "",
     capacity: "",
     price: "",
@@ -71,6 +72,7 @@ export function CreateWorkshopDialog() {
           time: "",
           duration: "",
           platform: "Google Meet",
+          meetingLink: "",
           instructor: "",
           capacity: "",
           price: "",
@@ -88,7 +90,9 @@ export function CreateWorkshopDialog() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -120,7 +124,7 @@ export function CreateWorkshopDialog() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <Label htmlFor="title">
+              <Label htmlFor="title" className="mb-2">
                 Workshop Title <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -134,7 +138,7 @@ export function CreateWorkshopDialog() {
             </div>
 
             <div className="col-span-2">
-              <Label htmlFor="description">
+              <Label htmlFor="description" className="mb-2">
                 Description <span className="text-red-500">*</span>
               </Label>
               <Textarea
@@ -149,7 +153,7 @@ export function CreateWorkshopDialog() {
             </div>
 
             <div>
-              <Label htmlFor="date">
+              <Label htmlFor="date" className="mb-2">
                 Date <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -163,7 +167,7 @@ export function CreateWorkshopDialog() {
             </div>
 
             <div>
-              <Label htmlFor="time">
+              <Label htmlFor="time" className="mb-2">
                 Time <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -177,7 +181,7 @@ export function CreateWorkshopDialog() {
             </div>
 
             <div>
-              <Label htmlFor="duration">
+              <Label htmlFor="duration" className="mb-2">
                 Duration <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -191,7 +195,7 @@ export function CreateWorkshopDialog() {
             </div>
 
             <div>
-              <Label htmlFor="platform">
+              <Label htmlFor="platform" className="mb-2">
                 Platform <span className="text-red-500">*</span>
               </Label>
               <Select
@@ -206,14 +210,30 @@ export function CreateWorkshopDialog() {
                 <SelectContent>
                   <SelectItem value="Google Meet">Google Meet</SelectItem>
                   <SelectItem value="Zoom">Zoom</SelectItem>
-                  <SelectItem value="Microsoft Teams">Microsoft Teams</SelectItem>
+                  <SelectItem value="Microsoft Teams">
+                    Microsoft Teams
+                  </SelectItem>
                   <SelectItem value="In-Person">In-Person</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div>
-              <Label htmlFor="instructor">
+              <Label htmlFor="meetingLink" className="mb-2">
+                Meeting Link <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="meetingLink"
+                name="meetingLink"
+                value={formData.meetingLink}
+                onChange={handleChange}
+                placeholder="https://meet.google.com/abc..."
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="instructor" className="mb-2">
                 Instructor <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -227,7 +247,7 @@ export function CreateWorkshopDialog() {
             </div>
 
             <div>
-              <Label htmlFor="capacity">
+              <Label htmlFor="capacity" className="mb-2">
                 Capacity <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -243,7 +263,7 @@ export function CreateWorkshopDialog() {
             </div>
 
             <div>
-              <Label htmlFor="price">
+              <Label htmlFor="price" className="mb-2">
                 Price (₹) <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -260,7 +280,9 @@ export function CreateWorkshopDialog() {
             </div>
 
             <div className="col-span-2">
-              <Label htmlFor="topics">Topics Covered</Label>
+              <Label htmlFor="topics" className="mb-2">
+                Topics Covered
+              </Label>
               <div className="flex gap-2 mb-2">
                 <Input
                   id="topics"
