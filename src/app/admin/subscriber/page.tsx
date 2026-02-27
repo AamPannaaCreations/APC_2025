@@ -33,6 +33,7 @@ import {
   FaUsers,
   FaEnvelope,
 } from "react-icons/fa";
+import { Spinner } from "@/components/ui/spinner";
 
 type Subscriber = {
   _id: string;
@@ -256,9 +257,14 @@ export default function SubscribersPage() {
       <Card>
         <CardContent className="pt-6">
           {loading ? (
-            <div className="text-center py-8">
-              <div className="text-lg">Loading subscribers...</div>
+          
+             <div className=" h-40 flex items-center justify-center gap-4 [--radius:1.2rem]">
+              <Badge>
+                <Spinner data-icon="inline-start" />
+                Syncing
+              </Badge>
             </div>
+
           ) : filteredSubscribers.length === 0 ? (
             <div className="text-center py-8">
               <FaUsers className="mx-auto text-4xl text-muted-foreground mb-3" />

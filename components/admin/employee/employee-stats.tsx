@@ -1,12 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 
 interface EmployeeStatsProps {
+  loading: boolean;
   total: number;
   active: number;
   inactive: number;
 }
 
-export function EmployeeStats({ total, active, inactive }: EmployeeStatsProps) {
+export function EmployeeStats({ loading, total, active, inactive }: EmployeeStatsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-3">
       <Card>
@@ -14,7 +16,7 @@ export function EmployeeStats({ total, active, inactive }: EmployeeStatsProps) {
           <CardTitle>Total Employees</CardTitle>
         </CardHeader>
         <CardContent className="text-3xl font-bold">
-          {total}
+          {loading ? <Spinner className="h-6 w-6" /> : total}
         </CardContent>
       </Card>
 
@@ -23,7 +25,7 @@ export function EmployeeStats({ total, active, inactive }: EmployeeStatsProps) {
           <CardTitle>Active Employees</CardTitle>
         </CardHeader>
         <CardContent className="text-3xl font-bold text-green-600">
-          {active}
+          {loading ? <Spinner className="h-6 w-6" /> : active}
         </CardContent>
       </Card>
 
@@ -32,7 +34,7 @@ export function EmployeeStats({ total, active, inactive }: EmployeeStatsProps) {
           <CardTitle>Inactive Employees</CardTitle>
         </CardHeader>
         <CardContent className="text-3xl font-bold text-gray-600">
-          {inactive}
+          {loading ? <Spinner className="h-6 w-6" /> : inactive}
         </CardContent>
       </Card>
     </div>

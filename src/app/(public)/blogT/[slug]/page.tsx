@@ -246,34 +246,72 @@ function RenderBlock({ block }: { block: OutputBlockData }) {
         </div>
       );
 
+    // case "linkTool":
+    //   return (
+    //     <div className="my-6 border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+    //       <a href={block.data.link} target="_blank" rel="noopener noreferrer">
+    //         {block.data.meta?.image?.url && (
+    //           <div className="relative w-full h-48">
+    //             <img
+    //               src={block.data.meta.image.url}
+    //               alt={block.data.meta.title ?? "Link preview"}
+    //               className="object-cover"
+    //             />
+    //           </div>
+    //         )}
+    //         <div className="p-4">
+    //           <h3 className="font-semibold text-lg hover:text-primary transition-colors">
+    //             {block.data.meta?.title || block.data.link}
+    //           </h3>
+    //           {block.data.meta?.description && (
+    //             <p className="text-muted-foreground text-sm mt-1">
+    //               {block.data.meta.description}
+    //             </p>
+    //           )}
+    //           <p className="text-primary text-xs mt-2 truncate">
+    //             {block.data.link}
+    //           </p>
+    //         </div>
+    //       </a>
+    //     </div>
+    //   );
+
     case "linkTool":
       return (
-        <div className="my-6 border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-          <a href={block.data.link} target="_blank" rel="noopener noreferrer">
+        <div className="my-6 border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 hover:cursor-pointer">
+          <div className="flex flex-col md:flex-row">
             {block.data.meta?.image?.url && (
-              <div className="relative w-full h-48">
-                <Image
+              <div className="relative w-full md:w-64 h-48 md:h-auto shrink-0 overflow-hidden">
+                <img
                   src={block.data.meta.image.url}
                   alt={block.data.meta.title ?? "Link preview"}
-                  fill
-                  className="object-cover"
+                  className="w-full h-full object-cover"
                 />
               </div>
             )}
-            <div className="p-4">
-              <h3 className="font-semibold text-lg hover:text-primary transition-colors">
-                {block.data.meta?.title || block.data.link}
-              </h3>
-              {block.data.meta?.description && (
-                <p className="text-muted-foreground text-sm mt-1">
-                  {block.data.meta.description}
-                </p>
-              )}
-              <p className="text-primary text-xs mt-2 truncate">
-                {block.data.link}
-              </p>
+            <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 className="font-bold text-lg sm:text-xl mb-2 hover:text-primary transition-colors line-clamp-2">
+                  {block.data.meta?.title || "Link Preview"}
+                </h3>
+                {block.data.meta?.description && (
+                  <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 sm:line-clamp-3 mb-3">
+                    {block.data.meta.description}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-2 text-primary text-xs sm:text-sm font-medium mt-2">
+                <a
+                  href={block.data.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  {new URL(block.data.link).hostname}
+                </a>
+              </div>
             </div>
-          </a>
+          </div>
         </div>
       );
 

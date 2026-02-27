@@ -7,6 +7,8 @@ import { CreateEmployeeDialog } from "@/components/admin/employee/create-employe
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 import toast from "react-hot-toast";
+import { Spinner } from "@/components/ui/spinner";
+import { Badge } from "@/components/ui/badge";
 
 interface Employee {
   _id: string;
@@ -33,10 +35,12 @@ export default function AdminEmployeePage() {
     active: 0,
     inactive: 0,
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchEmployees = async () => {
+    setLoading(true);
+
     try {
       const response = await fetch("/api/employee", {
         cache: "no-store",
@@ -63,6 +67,7 @@ export default function AdminEmployeePage() {
   }, []);
 
   const handleRefresh = async () => {
+    setLoading(true);
     setRefreshing(true);
     await fetchEmployees();
     toast.success("Employees refreshed");
@@ -96,20 +101,16 @@ export default function AdminEmployeePage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <p>Loading employees...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Employees</h1>
         <div className="flex gap-2">
-          <Button onClick={handleRefresh} variant="outline" disabled={refreshing}>
+          <Button
+            onClick={handleRefresh}
+            variant="outline"
+            disabled={refreshing}
+          >
             <RefreshCcw
               className={`mr-2 h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
             />
@@ -120,17 +121,27 @@ export default function AdminEmployeePage() {
       </div>
 
       <EmployeeStats
+        loading={loading}
         total={stats.total}
         active={stats.active}
         inactive={stats.inactive}
       />
 
       <div className="rounded-lg border">
-        <EmployeeTable
-          employees={employees}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
+        {loading ? (
+          <div className=" h-40 flex items-center justify-center gap-4 [--radius:1.2rem]">
+            <Badge>
+              <Spinner data-icon="inline-start" />
+              Syncing
+            </Badge>
+          </div>
+        ) : (
+          <EmployeeTable
+            employees={employees}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        )}
       </div>
     </div>
   );

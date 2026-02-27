@@ -58,7 +58,10 @@ export function WorkshopTable({ workshops, onDelete }: WorkshopTableProps) {
       <TableBody>
         {workshops.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={8} className="text-center text-muted-foreground">
+            <TableCell
+              colSpan={8}
+              className="text-center text-muted-foreground"
+            >
               No workshops found
             </TableCell>
           </TableRow>
@@ -68,7 +71,7 @@ export function WorkshopTable({ workshops, onDelete }: WorkshopTableProps) {
               <TableCell className="font-medium">
                 <div>
                   <p className="font-semibold">{workshop.title}</p>
-                  <p className="text-sm text-gray-500 line-clamp-1">
+                  <p className="text-sm text-gray-500 w-60 line-clamp-1">
                     {workshop.description}
                   </p>
                 </div>
@@ -90,7 +93,9 @@ export function WorkshopTable({ workshops, onDelete }: WorkshopTableProps) {
                   </p>
                   <p className="text-gray-500">
                     {workshop.capacity
-                      ? Math.round(((workshop.enrolled || 0) / workshop.capacity) * 100)
+                      ? Math.round(
+                          ((workshop.enrolled || 0) / workshop.capacity) * 100,
+                        )
                       : 0}
                     % filled
                   </p>

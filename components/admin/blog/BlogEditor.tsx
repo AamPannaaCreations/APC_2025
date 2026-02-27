@@ -1,95 +1,3 @@
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-
-// "use client";
-
-// import dynamic from "next/dynamic";
-// import { useMemo } from "react";
-// import "react-quill/dist/quill.snow.css";
-
-// import { Input } from "@/components/ui/input";
-// import { Textarea } from "@/components/ui/textarea";
-// import { Button } from "@/components/ui/button";
-
-// type BlogEditorProps = {
-//   form: any;
-//   setForm: (val: any) => void;
-//   onSubmit: () => void;
-//   buttonText: string;
-//   disabled?: boolean;
-// };
-
-// export default function BlogEditor({
-//   form,
-//   setForm,
-//   onSubmit,
-//   buttonText,
-//   disabled = false,
-// }: BlogEditorProps) {
-//   const ReactQuill = useMemo(
-//     () => dynamic(() => import("react-quill-new"), { ssr: false }),
-//     []
-//   );
-
-//   return (
-//     <div className="space-y-6">
-//       <div>
-//         <label className="block text-sm font-semibold mb-2">Title *</label>
-//         <Input
-//           placeholder="Enter blog title"
-//           value={form.title}
-//           onChange={e => setForm({ ...form, title: e.target.value })}
-//           disabled={disabled}
-//           className="text-lg"
-//         />
-//       </div>
-
-//       <div>
-//         <label className="block text-sm font-semibold mb-2">
-//           Short Description *
-//         </label>
-//         <Textarea
-//           placeholder="Brief description that appears in blog cards"
-//           value={form.description}
-//           onChange={e => setForm({ ...form, description: e.target.value })}
-//           disabled={disabled}
-//           rows={3}
-//         />
-//       </div>
-
-//       <div>
-//         <label className="block text-sm font-semibold mb-2">Content *</label>
-//         <ReactQuill
-//           theme="snow"
-//           value={form.content}
-//           onChange={value => setForm({ ...form, content: value })}
-//           className="bg-white dark:bg-gray-800 min-h-[400px]"
-//         />
-//       </div>
-
-//       <div>
-//         <label className="block text-sm font-semibold mb-2">
-//           Tags (comma separated)
-//         </label>
-//         <Input
-//           placeholder="e.g., React, Next.js, TypeScript"
-//           value={form.tags}
-//           onChange={e => setForm({ ...form, tags: e.target.value })}
-//           disabled={disabled}
-//         />
-//       </div>
-
-//       <Button
-//         onClick={onSubmit}
-//         disabled={disabled}
-//         className="hover:cursor-pointer w-full py-6 text-lg"
-//         size="lg"
-//       >
-//         {buttonText}
-//       </Button>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -125,7 +33,7 @@ type BlogEditorProps = {
     content: OutputData | null;
     tags: string;
   };
-  setForm: (val: BlogEditorProps["form"]) => void;
+  setForm: React.Dispatch<React.SetStateAction<BlogEditorProps["form"]>>;
   onSubmit: () => void;
   buttonText: string;
   disabled?: boolean;
@@ -157,7 +65,7 @@ export default function BlogEditor({
         onChange: async () => {
           if (editorRef.current) {
             const data = await editorRef.current.save();
-            setForm({ ...form, content: data });
+            setForm(prev => ({ ...prev, content: data }));
           }
         },
 
@@ -284,7 +192,7 @@ export default function BlogEditor({
           linkTool: {
             class: LinkTool,
             config: {
-              endpoint: "/api/fetch-link-meta",
+              endpoint: "/api/blogs/fetch-link-meta",
             },
           },
         },
@@ -308,7 +216,7 @@ export default function BlogEditor({
         <Input
           placeholder="Enter blog title"
           value={form.title}
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
+          onChange={(e) => setForm(prev => ({ ...prev, title: e.target.value }))}
           disabled={disabled}
           className="text-lg"
         />
@@ -321,7 +229,7 @@ export default function BlogEditor({
         <Textarea
           placeholder="Brief description that appears in blog cards"
           value={form.description}
-          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
           disabled={disabled}
           rows={3}
         />
@@ -342,7 +250,7 @@ export default function BlogEditor({
         <Input
           placeholder="e.g., React, Next.js, TypeScript"
           value={form.tags}
-          onChange={(e) => setForm({ ...form, tags: e.target.value })}
+          onChange={(e) => setForm(prev => ({ ...prev, tags: e.target.value }))}
           disabled={disabled}
         />
       </div>

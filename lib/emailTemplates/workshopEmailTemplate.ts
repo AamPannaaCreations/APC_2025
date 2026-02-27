@@ -120,7 +120,10 @@ See you soon! 🚀
 <div style="background:#f8fafc;padding:22px;text-align:center;border-top:1px solid #e2e8f0;">
 
 <p style="font-size:13px;color:#64748b;margin:0;">
-Need help? Just reply to this email.
+Do not reply to this email. For any queries, contact us at
+<a href="mailto:operations@aampanna.net" style="color:#0f766e;text-decoration:none;font-weight:600;">
+operations@aampanna.net
+</a>
 </p>
 
 <p style="font-size:12px;color:#94a3b8;margin-top:8px;">
