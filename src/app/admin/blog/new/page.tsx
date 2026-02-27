@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { OutputData } from "@editorjs/editorjs";
 import BlogEditor from "@/components/admin/blog/BlogEditor";
 import { uploadToCloudinary } from "@/lib/uploadImage";
 import { Button } from "@/components/ui/button";
@@ -14,11 +15,17 @@ export default function CreateBlogPage() {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [creating, setCreating] = useState(false);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    title: string;
+    description: string;
+    mainImage: string;
+    content: OutputData | null;
+    tags: string;
+  }>({
     title: "",
     description: "",
     mainImage: "",
-    content: "",
+    content: null,
     tags: "",
   });
 
@@ -56,7 +63,10 @@ export default function CreateBlogPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...form,
+          title: form.title,
+          description: form.description,
+          mainImage: form.mainImage,
+          content: form.content,
           tags: form.tags.split(",").map(t => t.trim()).filter(Boolean),
         }),
       });
@@ -65,9 +75,17 @@ export default function CreateBlogPage() {
 
       const blog = await res.json();
       toast.success("Blog post created successfully!", { id: createToast });
-      setTimeout(() => {
-        window.location.href = `/blogT/${blog.slug}`;
-      }, 500);
+
+      console.log("Created blog To check slug is present or not:", blog);
+
+        setTimeout(() => {
+        if (blog.slug) {
+          router.push(`/blogT/${blog.slug}`);
+        } else {
+          router.push("/admin/blog");
+        }
+      }, 1000);
+
     } catch (error) {
       toast.error("Failed to create blog post", { id: createToast });
       console.error(error);
@@ -75,10 +93,37 @@ export default function CreateBlogPage() {
     }
   };
 
+    const handleImageRemove = async () => {
+    if (!form.mainImage) return;
+
+    const deleteToast = toast.loading("Removing image...");
+
+    try {
+      // Extract public ID from Cloudinary URL
+      // URL format: https://res.cloudinary.com/{cloud_name}/image/upload/{public_id}.{extension}
+      const urlParts = form.mainImage.split("/");
+      const lastPart = urlParts[urlParts.length - 1];
+      const publicId = lastPart.split(".")[0];
+
+      // Call delete API
+      await fetch("/api/cloudinary/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ publicId }),
+      });
+
+      setForm(prev => ({ ...prev, mainImage: "" }));
+      toast.success("Image removed successfully!", { id: deleteToast });
+    } catch (error) {
+      toast.error("Failed to remove image", { id: deleteToast });
+      console.error(error);
+    }
+  };
+
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
+    <div className="min-h-screen py-8 px-4">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
         <div className="mb-6">
           <Button
             variant="ghost"
@@ -94,7 +139,6 @@ export default function CreateBlogPage() {
         </div>
 
         <Card className="p-6 mb-6">
-          {/* Image Upload Section */}
           <div className="space-y-4">
             <label className="block text-lg font-semibold">
               Featured Image *
@@ -139,7 +183,7 @@ export default function CreateBlogPage() {
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => setForm(prev => ({ ...prev, mainImage: "" }))}
+                  onClick={handleImageRemove}
                   className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <FaTrash className="mr-2" /> Remove
@@ -149,7 +193,6 @@ export default function CreateBlogPage() {
           </div>
         </Card>
 
-        {/* Blog Editor */}
         <Card className="p-6">
           <BlogEditor
             form={form}

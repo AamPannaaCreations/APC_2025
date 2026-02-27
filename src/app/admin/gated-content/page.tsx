@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
+import { Badge } from "@/components/ui/badge";
+import { Spinner } from "@/components/ui/spinner";
 
 interface GatedContent {
   _id: string;
@@ -36,10 +38,12 @@ export default function AdminGatedContentPage() {
     inactive: 0,
     totalAccesses: 0,
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchContents = async () => {
+    setLoading(true);
+
     try {
       const response = await fetch("/api/gated-content", {
         cache: "no-store",
@@ -66,6 +70,7 @@ export default function AdminGatedContentPage() {
   }, []);
 
   const handleRefresh = async () => {
+    setLoading(true);
     setRefreshing(true);
     await fetchContents();
     toast.success("Content refreshed");
@@ -121,14 +126,6 @@ export default function AdminGatedContentPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <p>Loading content...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -154,6 +151,7 @@ export default function AdminGatedContentPage() {
       </div>
 
       <ContentStats
+        loading={loading}
         total={stats.total}
         active={stats.active}
         inactive={stats.inactive}
@@ -161,12 +159,21 @@ export default function AdminGatedContentPage() {
       />
 
       <div className="rounded-lg border">
-        <ContentTable
-          contents={contents}
-          onViewLeads={handleViewLeads}
-          onDelete={handleDelete}
-          onToggleStatus={handleToggleStatus}
-        />
+        {loading ? (
+          <div className=" h-40 flex items-center justify-center gap-4 [--radius:1.2rem]">
+            <Badge>
+              <Spinner data-icon="inline-start" />
+              Syncing
+            </Badge>
+          </div>
+        ) : (
+          <ContentTable
+            contents={contents}
+            onViewLeads={handleViewLeads}
+            onDelete={handleDelete}
+            onToggleStatus={handleToggleStatus}
+          />
+        )}
       </div>
     </div>
   );

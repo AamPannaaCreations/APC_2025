@@ -1,6 +1,4 @@
 import {
-  BellIcon,
-  CalendarIcon,
   FileTextIcon,
   GlobeIcon,
   InputIcon,
@@ -9,36 +7,8 @@ import {
 } from "@radix-ui/react-icons";
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
 import { Globe } from "@/components/ui/globe";
-import { AvatarCircles } from "../ui/avatar-circles";
 import { AnimatedHighlightedAreaChart } from "./Chart";
 import { AnimatedListDemo } from "./List";
-
-const avatars = [
-  {
-    imageUrl: "https://avatars.githubusercontent.com/u/16860528",
-    profileUrl: "https://github.com/dillionverma",
-  },
-  {
-    imageUrl: "https://avatars.githubusercontent.com/u/20110627",
-    profileUrl: "https://github.com/tomonarifeehan",
-  },
-  {
-    imageUrl: "https://avatars.githubusercontent.com/u/106103625",
-    profileUrl: "https://github.com/BankkRoll",
-  },
-  {
-    imageUrl: "https://avatars.githubusercontent.com/u/59228569",
-    profileUrl: "https://github.com/safethecode",
-  },
-  {
-    imageUrl: "https://avatars.githubusercontent.com/u/59442788",
-    profileUrl: "https://github.com/sanjay-mali",
-  },
-  {
-    imageUrl: "https://avatars.githubusercontent.com/u/89768406",
-    profileUrl: "https://github.com/itsarghyadas",
-  },
-];
 
 const features = [
   {
@@ -75,7 +45,6 @@ const features = [
     href: "/home",
     cta: "Learn more",
     background: <img className="absolute -top-20 -right-20 opacity-60" />,
-    // background: <AvatarCircles className="mt-10" numPeople={10} avatarUrls={avatars} />,
     className: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
   },
   {

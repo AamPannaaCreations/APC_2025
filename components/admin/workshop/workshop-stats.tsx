@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 
 interface WorkshopStatsProps {
+  loading?: boolean;
   total: number;
   upcoming: number;
   past: number;
@@ -8,6 +10,7 @@ interface WorkshopStatsProps {
 }
 
 export function WorkshopStats({
+  loading,
   total,
   upcoming,
   past,
@@ -20,7 +23,7 @@ export function WorkshopStats({
           <CardTitle>Total Workshops</CardTitle>
         </CardHeader>
         <CardContent className="text-3xl font-bold">
-          {total}
+          {loading ? <Spinner className="h-6 w-6" /> : total}
         </CardContent>
       </Card>
 
@@ -29,7 +32,7 @@ export function WorkshopStats({
           <CardTitle>Upcoming Workshops</CardTitle>
         </CardHeader>
         <CardContent className="text-3xl font-bold text-blue-600">
-          {upcoming}
+          {loading ? <Spinner className="h-6 w-6" /> : upcoming}
         </CardContent>
       </Card>
 
@@ -38,7 +41,7 @@ export function WorkshopStats({
           <CardTitle>Past Workshops</CardTitle>
         </CardHeader>
         <CardContent className="text-3xl font-bold text-gray-600">
-          {past}
+          {loading ? <Spinner className="h-6 w-6" /> : past}
         </CardContent>
       </Card>
 
@@ -47,7 +50,7 @@ export function WorkshopStats({
           <CardTitle>Total Registrations</CardTitle>
         </CardHeader>
         <CardContent className="text-3xl font-bold text-green-600">
-          {totalRegistrations}
+          {loading ? <Spinner className="h-6 w-6" /> : totalRegistrations}
         </CardContent>
       </Card>
     </div>

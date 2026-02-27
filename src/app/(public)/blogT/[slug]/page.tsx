@@ -1,4 +1,3 @@
-import RenderQuillContent from "@/components/admin/blog/RenderQuillContent";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,32 +7,350 @@ import Link from "next/link";
 import { FaArrowLeft, FaClock, FaCalendar } from "react-icons/fa";
 import { notFound } from "next/navigation";
 import ShareButton from "@/components/ShareButton";
-import "react-quill/dist/quill.snow.css";
-
-// No Need to validate each blog 
-// export const revalidate = 604800; 
+import type { OutputData, OutputBlockData } from "@editorjs/editorjs";
 
 interface Blog {
   _id: string;
   title: string;
   description: string;
   mainImage: string;
-  content: string;
+  content: OutputData;
   tags: string[];
   createdAt: string;
   slug: string;
-};
+}
 
 async function getBlog(slug: string): Promise<Blog> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_URL}/api/blogs/slug/${slug}`,
+    { cache: "no-store" },
   );
 
-  if (!res.ok) {
-    notFound();
-  }
+  if (!res.ok) notFound();
 
   return res.json();
+}
+
+function getReadingTime(content: OutputData): number {
+  const text = content.blocks
+    .map((block) => {
+      switch (block.type) {
+        case "paragraph":
+        case "header":
+          return block.data.text ?? "";
+        case "list":
+          return block.data.items
+            ?.map((item: { content?: string } | string) =>
+              typeof item === "string" ? item : (item.content ?? ""),
+            )
+            .join(" ");
+        case "quote":
+          return `${block.data.text ?? ""} ${block.data.caption ?? ""}`;
+        default:
+          return "";
+      }
+    })
+    .join(" ");
+
+  return Math.ceil(text.split(/\s+/).filter(Boolean).length / 200);
+}
+
+function RenderBlock({ block }: { block: OutputBlockData }) {
+  switch (block.type) {
+    case "header": {
+      const level = block.data.level as 1 | 2 | 3 | 4;
+      const sizeMap = {
+        1: "text-4xl",
+        2: "text-3xl",
+        3: "text-2xl",
+        4: "text-xl",
+      };
+      const headerClasses = `font-bold my-6 ${sizeMap[level]}`;
+
+      switch (level) {
+        case 1:
+          return (
+            <h1
+              className={headerClasses}
+              dangerouslySetInnerHTML={{ __html: block.data.text }}
+            />
+          );
+        case 2:
+          return (
+            <h2
+              className={headerClasses}
+              dangerouslySetInnerHTML={{ __html: block.data.text }}
+            />
+          );
+        case 3:
+          return (
+            <h3
+              className={headerClasses}
+              dangerouslySetInnerHTML={{ __html: block.data.text }}
+            />
+          );
+        case 4:
+          return (
+            <h4
+              className={headerClasses}
+              dangerouslySetInnerHTML={{ __html: block.data.text }}
+            />
+          );
+      }
+    }
+
+    case "paragraph":
+      return (
+        <p
+          className="my-4 text-foreground leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: block.data.text }}
+        />
+      );
+
+    case "list": {
+      const isOrdered = block.data.style === "ordered";
+      const Tag = isOrdered ? "ol" : "ul";
+      return (
+        <Tag
+          className={`my-4 ${isOrdered ? "list-decimal" : "list-disc"} ml-6 space-y-2`}
+        >
+          {block.data.items.map(
+            (item: { content?: string } | string, i: number) => (
+              <li
+                key={i}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    typeof item === "string" ? item : (item.content ?? ""),
+                }}
+              />
+            ),
+          )}
+        </Tag>
+      );
+    }
+
+    case "image":
+      return (
+        <figure className="my-8">
+          <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+            <Image
+              src={block.data.file.url}
+              alt={block.data.caption || "Blog image"}
+              fill
+              className="object-contain"
+            />
+          </div>
+          {block.data.caption && (
+            <figcaption className="text-center text-muted-foreground mt-3 text-sm italic">
+              {block.data.caption}
+            </figcaption>
+          )}
+        </figure>
+      );
+
+    case "code":
+      return (
+        <pre className="bg-gray-900 text-white p-6 rounded-lg my-6 overflow-x-auto">
+          <code className="text-sm font-mono">{block.data.code}</code>
+        </pre>
+      );
+
+    case "quote":
+      return (
+        <blockquote className="border-l-4 border-primary pl-6 py-4 my-6 bg-accent/30 rounded-r-lg italic">
+          <p
+            className="text-lg"
+            dangerouslySetInnerHTML={{ __html: block.data.text }}
+          />
+          {block.data.caption && (
+            <cite className="block text-muted-foreground mt-3 text-sm not-italic">
+              — {block.data.caption}
+            </cite>
+          )}
+        </blockquote>
+      );
+
+    case "table":
+      return (
+        <div className="my-6 overflow-x-auto rounded-lg border border-border">
+          <table className="min-w-full">
+            <tbody>
+              {block.data.content.map((row: string[], rowIndex: number) => (
+                <tr
+                  key={rowIndex}
+                  className="border-b border-border last:border-0"
+                >
+                  {row.map((cell: string, cellIndex: number) => (
+                    <td
+                      key={cellIndex}
+                      className="border-r border-border last:border-0 px-4 py-2 text-sm"
+                      dangerouslySetInnerHTML={{ __html: cell }}
+                    />
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+
+    case "checklist":
+      return (
+        <ul className="my-4 space-y-2">
+          {block.data.items.map(
+            (item: { checked: boolean; text: string }, i: number) => (
+              <li key={i} className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={item.checked}
+                  readOnly
+                  className="w-4 h-4 accent-primary"
+                />
+                <span
+                  className={
+                    item.checked ? "line-through text-muted-foreground" : ""
+                  }
+                >
+                  {item.text}
+                </span>
+              </li>
+            ),
+          )}
+        </ul>
+      );
+
+    case "delimiter":
+      return <hr className="my-10 border-t-2 border-border" />;
+
+    case "embed":
+      return (
+        <div className="my-6 aspect-video rounded-lg overflow-hidden">
+          <iframe
+            src={block.data.embed}
+            className="w-full h-full"
+            allowFullScreen
+            title={block.data.caption || "Embedded content"}
+          />
+        </div>
+      );
+
+    case "warning":
+      return (
+        <div className="my-6 bg-yellow-50 dark:bg-yellow-950 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <p className="font-semibold text-yellow-800 dark:text-yellow-300">
+            {block.data.title}
+          </p>
+          <p className="text-yellow-700 dark:text-yellow-400 mt-1">
+            {block.data.message}
+          </p>
+        </div>
+      );
+
+    // case "linkTool":
+    //   return (
+    //     <div className="my-6 border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+    //       <a href={block.data.link} target="_blank" rel="noopener noreferrer">
+    //         {block.data.meta?.image?.url && (
+    //           <div className="relative w-full h-48">
+    //             <img
+    //               src={block.data.meta.image.url}
+    //               alt={block.data.meta.title ?? "Link preview"}
+    //               className="object-cover"
+    //             />
+    //           </div>
+    //         )}
+    //         <div className="p-4">
+    //           <h3 className="font-semibold text-lg hover:text-primary transition-colors">
+    //             {block.data.meta?.title || block.data.link}
+    //           </h3>
+    //           {block.data.meta?.description && (
+    //             <p className="text-muted-foreground text-sm mt-1">
+    //               {block.data.meta.description}
+    //             </p>
+    //           )}
+    //           <p className="text-primary text-xs mt-2 truncate">
+    //             {block.data.link}
+    //           </p>
+    //         </div>
+    //       </a>
+    //     </div>
+    //   );
+
+    case "linkTool":
+      return (
+        <div className="my-6 border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 hover:cursor-pointer">
+          <div className="flex flex-col md:flex-row">
+            {block.data.meta?.image?.url && (
+              <div className="relative w-full md:w-64 h-48 md:h-auto shrink-0 overflow-hidden">
+                <img
+                  src={block.data.meta.image.url}
+                  alt={block.data.meta.title ?? "Link preview"}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 className="font-bold text-lg sm:text-xl mb-2 hover:text-primary transition-colors line-clamp-2">
+                  {block.data.meta?.title || "Link Preview"}
+                </h3>
+                {block.data.meta?.description && (
+                  <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 sm:line-clamp-3 mb-3">
+                    {block.data.meta.description}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-2 text-primary text-xs sm:text-sm font-medium mt-2">
+                <a
+                  href={block.data.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  {new URL(block.data.link).hostname}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "attaches":
+      return (
+        <div className="my-6 border border-border rounded-lg p-4 flex items-center gap-4 hover:bg-accent/30 transition-colors">
+          <div className="flex-1 min-w-0">
+            <a
+              href={block.data.file.url}
+              download
+              className="font-medium hover:text-primary transition-colors truncate block"
+            >
+              {block.data.title}
+            </a>
+            <p className="text-sm text-muted-foreground">
+              {(block.data.file.size / 1024).toFixed(1)} KB
+            </p>
+          </div>
+          <a
+            href={block.data.file.url}
+            download
+            className="shrink-0 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity text-sm"
+          >
+            Download
+          </a>
+        </div>
+      );
+
+    case "raw":
+      return (
+        <div
+          className="my-6"
+          dangerouslySetInnerHTML={{ __html: block.data.html }}
+        />
+      );
+
+    default:
+      return null;
+  }
 }
 
 export default async function BlogViewPage({
@@ -50,21 +367,19 @@ export default async function BlogViewPage({
     year: "numeric",
   });
 
-  const readingTime = Math.ceil(blog.content.split(" ").length / 200); // Approx reading time
+  const readingTime = getReadingTime(blog.content);
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Back Button */}
       <div className="max-w-4xl mx-auto px-4 py-6">
         <Link href="/blogT">
-          <Button variant="ghost" className="gap-2 mb-6 hover:cursor-pointer ">
+          <Button variant="ghost" className="gap-2 mb-6 hover:cursor-pointer">
             <FaArrowLeft className="h-4 w-4" />
             Back to Blogs
           </Button>
         </Link>
       </div>
 
-      {/* Hero Image */}
       {blog.mainImage && (
         <div className="w-full max-w-5xl mx-auto px-4 mb-8">
           <div className="relative w-full aspect-video rounded-xl overflow-hidden">
@@ -79,10 +394,8 @@ export default async function BlogViewPage({
         </div>
       )}
 
-      {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 pb-16">
-        {/* Tags */}
-        {blog.tags && blog.tags.length > 0 && (
+        {blog.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
             {blog.tags.map((tag, idx) => (
               <Badge key={idx} variant="secondary" className="text-sm">
@@ -92,17 +405,14 @@ export default async function BlogViewPage({
           </div>
         )}
 
-        {/* Title */}
         <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
           {blog.title}
         </h1>
 
-        {/* Description */}
         <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
           {blog.description}
         </p>
 
-        {/* Meta Info */}
         <Card className="p-4 mb-8">
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -119,15 +429,16 @@ export default async function BlogViewPage({
 
         <Separator className="mb-8" />
 
-        {/* Blog Content */}
-        <div className="mb-12">
-          <RenderQuillContent content={blog.content} />
+        {/* EditorJS Content */}
+        <div className="mb-12 prose prose-neutral dark:prose-invert max-w-none">
+          {blog.content?.blocks?.map((block, index) => (
+            <RenderBlock key={block.id ?? index} block={block} />
+          ))}
         </div>
 
         <Separator className="mb-8" />
 
-        {/* Related Tags */}
-        {blog.tags && blog.tags.length > 0 && (
+        {blog.tags.length > 0 && (
           <div className="mb-8">
             <h3 className="text-lg font-semibold mb-4">Topics</h3>
             <div className="flex flex-wrap gap-2">
@@ -145,7 +456,6 @@ export default async function BlogViewPage({
           </div>
         )}
 
-        {/* CTA */}
         <Card className="p-8 text-center bg-accent/50">
           <h3 className="text-2xl font-bold mb-2">Enjoyed this article?</h3>
           <p className="text-muted-foreground mb-6">

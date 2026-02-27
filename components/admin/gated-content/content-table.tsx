@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Trash2, Power, ExternalLink } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 interface GatedContent {
   _id: string;
@@ -57,11 +58,7 @@ export function ContentTable({
       other: "bg-gray-100 text-gray-800",
     };
 
-    return (
-      <Badge className={colors[type] || ""}>
-        {type.toUpperCase()}
-      </Badge>
-    );
+    return <Badge className={colors[type] || ""}>{type.toUpperCase()}</Badge>;
   };
 
   return (
@@ -77,10 +74,14 @@ export function ContentTable({
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
+
       <TableBody>
         {contents.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={7} className="text-center text-muted-foreground">
+            <TableCell
+              colSpan={7}
+              className="text-center text-muted-foreground"
+            >
               No content found
             </TableCell>
           </TableRow>
@@ -117,7 +118,9 @@ export function ContentTable({
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => window.open(`/content/${content._id}`, "_blank")}
+                    onClick={() =>
+                      window.open(`/content/${content._id}`, "_blank")
+                    }
                     title="Preview"
                   >
                     <ExternalLink className="h-4 w-4" />
@@ -126,11 +129,15 @@ export function ContentTable({
                     variant="ghost"
                     size="icon"
                     onClick={() => onToggleStatus(content._id, content.status)}
-                    title={content.status === "active" ? "Deactivate" : "Activate"}
+                    title={
+                      content.status === "active" ? "Deactivate" : "Activate"
+                    }
                   >
                     <Power
                       className={`h-4 w-4 ${
-                        content.status === "active" ? "text-green-600" : "text-gray-400"
+                        content.status === "active"
+                          ? "text-green-600"
+                          : "text-gray-400"
                       }`}
                     />
                   </Button>
