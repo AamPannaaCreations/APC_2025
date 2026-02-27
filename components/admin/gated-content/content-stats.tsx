@@ -1,14 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, CheckCircle, XCircle, Users } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 interface ContentStatsProps {
+  loading?: boolean;
   total: number;
   active: number;
   inactive: number;
   totalAccesses: number;
 }
 
-export function ContentStats({ total, active, inactive, totalAccesses }: ContentStatsProps) {
+export function ContentStats({ loading, total, active, inactive, totalAccesses }: ContentStatsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-4">
       <Card>
@@ -17,7 +19,7 @@ export function ContentStats({ total, active, inactive, totalAccesses }: Content
           <FileText className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{total}</div>
+          <div className="text-2xl font-bold">{loading ? <Spinner className="h-5 w-5" /> : total}</div>
         </CardContent>
       </Card>
 
@@ -27,7 +29,7 @@ export function ContentStats({ total, active, inactive, totalAccesses }: Content
           <CheckCircle className="h-4 w-4 text-green-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{active}</div>
+          <div className="text-2xl font-bold">{loading ? <Spinner className="h-5 w-5" /> : active}</div>
         </CardContent>
       </Card>
 
@@ -37,7 +39,7 @@ export function ContentStats({ total, active, inactive, totalAccesses }: Content
           <XCircle className="h-4 w-4 text-red-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{inactive}</div>
+          <div className="text-2xl font-bold">{loading ? <Spinner className="h-5 w-5" /> : inactive}</div>
         </CardContent>
       </Card>
 
@@ -47,7 +49,7 @@ export function ContentStats({ total, active, inactive, totalAccesses }: Content
           <Users className="h-4 w-4 text-blue-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{totalAccesses}</div>
+          <div className="text-2xl font-bold">{loading ? <Spinner className="h-5 w-5" /> : totalAccesses}</div>
         </CardContent>
       </Card>
     </div>

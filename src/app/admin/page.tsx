@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, NotebookPen, FileText, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { Spinner } from "@/components/ui/spinner";
 
 interface DashboardStats {
   employees: {
@@ -31,13 +32,15 @@ export default function AdminDashboard() {
     workshops: { total: 0, upcoming: 0, past: 0, totalRegistrations: 0 },
     blogs: { total: 0, featured: 0 },
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchDashboardStats();
   }, []);
 
   const fetchDashboardStats = async () => {
+    setLoading(true);
+
     try {
       const [employeesRes, workshopsRes, blogsRes] = await Promise.all([
         fetch("/api/employee"),
@@ -86,9 +89,20 @@ export default function AdminDashboard() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.employees.total}</div>
+            <div className="text-2xl font-bold">
+              {loading ? (
+                <Spinner className="h-6 w-6" />
+              ) : (
+                stats.employees.total
+              )}
+            </div>
             <p className="text-xs text-muted-foreground">
-              {stats.employees.active} active
+              {loading ? (
+                <Spinner className="h-4 w-4" />
+              ) : (
+                stats.employees.active
+              )}{" "}
+              active
             </p>
           </CardContent>
         </Card>
@@ -101,9 +115,20 @@ export default function AdminDashboard() {
             <NotebookPen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.workshops.total}</div>
+            <div className="text-2xl font-bold">
+              {loading ? (
+                <Spinner className="h-6 w-6" />
+              ) : (
+                stats.workshops.total
+              )}
+            </div>
             <p className="text-xs text-muted-foreground">
-              {stats.workshops.upcoming} upcoming
+              {loading ? (
+                <Spinner className="h-4 w-4" />
+              ) : (
+                stats.workshops.upcoming
+              )}{" "}
+              upcoming
             </p>
           </CardContent>
         </Card>
@@ -114,9 +139,12 @@ export default function AdminDashboard() {
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.blogs.total}</div>
+            <div className="text-2xl font-bold">
+              {loading ? <Spinner className="h-6 w-6" /> : stats.blogs.total}
+            </div>
             <p className="text-xs text-muted-foreground">
-              {stats.blogs.featured} featured
+              {loading ? <Spinner className="h-4 w-4" /> : stats.blogs.featured}{" "}
+              featured
             </p>
           </CardContent>
         </Card>
@@ -130,7 +158,11 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {stats.workshops.totalRegistrations}
+              {loading ? (
+                <Spinner className="h-6 w-6" />
+              ) : (
+                stats.workshops.totalRegistrations
+              )}
             </div>
             <p className="text-xs text-muted-foreground">Total registrations</p>
           </CardContent>
@@ -198,13 +230,21 @@ export default function AdminDashboard() {
             <div className="flex justify-between">
               <span className="text-sm">Active Employees</span>
               <span className="text-sm font-bold">
-                {stats.employees.active}
+                {loading ? (
+                  <Spinner className="h-4 w-4" />
+                ) : (
+                  stats.employees.active
+                )}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm">Inactive Employees</span>
               <span className="text-sm font-bold">
-                {stats.employees.inactive}
+                {loading ? (
+                  <Spinner className="h-4 w-4" />
+                ) : (
+                  stats.employees.inactive
+                )}
               </span>
             </div>
           </CardContent>
@@ -218,12 +258,22 @@ export default function AdminDashboard() {
             <div className="flex justify-between">
               <span className="text-sm">Upcoming Workshops</span>
               <span className="text-sm font-bold">
-                {stats.workshops.upcoming}
+                {loading ? (
+                  <Spinner className="h-4 w-4" />
+                ) : (
+                  stats.workshops.upcoming
+                )}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm">Past Workshops</span>
-              <span className="text-sm font-bold">{stats.workshops.past}</span>
+              <span className="text-sm font-bold">
+                {loading ? (
+                  <Spinner className="h-4 w-4" />
+                ) : (
+                  stats.workshops.past
+                )}
+              </span>
             </div>
           </CardContent>
         </Card>
