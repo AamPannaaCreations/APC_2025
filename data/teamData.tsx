@@ -46,15 +46,6 @@ export const teamData = {
     },
   ],
   leadership: [
-    // {
-    //   id: 4,
-    //   name: "Godhuli Vyas",
-    //   role: "Operation & Client Retention manager",
-    //   image: "/team/godhuli.jpg",
-    //   linkedin: "https://www.linkedin.com/in/godhuli-vyas-4b7128253/",
-
-    //   description: "",
-    // },
     {
       id: 4,
       name: "Priyanshi Agrawal",
