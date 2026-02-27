@@ -9,6 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Employee {
   _id: string;
@@ -28,7 +29,11 @@ interface EmployeeTableProps {
   onDelete?: (id: string) => void;
 }
 
-export function EmployeeTable({ employees, onEdit, onDelete }: EmployeeTableProps) {
+export function EmployeeTable({
+  employees,
+  onEdit,
+  onDelete,
+}: EmployeeTableProps) {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-IN", {
       dateStyle: "medium",
@@ -54,7 +59,10 @@ export function EmployeeTable({ employees, onEdit, onDelete }: EmployeeTableProp
       <TableBody>
         {employees.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={9} className="text-center text-muted-foreground">
+            <TableCell
+              colSpan={9}
+              className="text-center text-muted-foreground"
+            >
               No employees found
             </TableCell>
           </TableRow>
@@ -70,7 +78,9 @@ export function EmployeeTable({ employees, onEdit, onDelete }: EmployeeTableProp
               <TableCell>{formatDate(employee.joiningDate)}</TableCell>
               <TableCell>
                 <Badge
-                  variant={employee.status === "active" ? "default" : "secondary"}
+                  variant={
+                    employee.status === "active" ? "default" : "secondary"
+                  }
                 >
                   {employee.status}
                 </Badge>
