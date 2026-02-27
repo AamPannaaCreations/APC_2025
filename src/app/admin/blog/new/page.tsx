@@ -75,9 +75,17 @@ export default function CreateBlogPage() {
 
       const blog = await res.json();
       toast.success("Blog post created successfully!", { id: createToast });
-      setTimeout(() => {
-        router.push(`/blogT/${blog.slug}`);
+
+      console.log("Created blog To check slug is present or not:", blog);
+
+        setTimeout(() => {
+        if (blog.slug) {
+          router.push(`/blogT/${blog.slug}`);
+        } else {
+          router.push("/admin/blog");
+        }
       }, 1000);
+
     } catch (error) {
       toast.error("Failed to create blog post", { id: createToast });
       console.error(error);

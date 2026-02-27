@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -26,7 +32,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import toast from "react-hot-toast";
 import Image from "next/image";
-import { FaEdit, FaTrash, FaPlus, FaSearch, FaFileAlt, FaTags } from "react-icons/fa";
+import {
+  FaEdit,
+  FaTrash,
+  FaPlus,
+  FaSearch,
+  FaFileAlt,
+  FaTags,
+  FaEye,
+} from "react-icons/fa";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Blog {
   _id: string;
@@ -65,7 +80,7 @@ export default function BlogDashboard() {
       const url = searchQuery
         ? `/api/blogs?search=${encodeURIComponent(searchQuery)}`
         : "/api/blogs";
-      
+
       const res = await fetch(url);
       const apiData: ApiResponse = await res.json();
       setData(apiData);
@@ -99,14 +114,6 @@ export default function BlogDashboard() {
       setDeleteId(null);
     }
   };
-
-  // if (loading) {
-  //   return (
-  //     <div className="flex items-center justify-center min-h-screen">
-  //       <div className="text-2xl">Loading...</div>
-  //     </div>
-  //   );
-  // }
 
   const blogs = data?.blogs || [];
   const pagination = data?.pagination;
@@ -144,7 +151,7 @@ export default function BlogDashboard() {
             </p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">This Page</CardTitle>
@@ -165,11 +172,9 @@ export default function BlogDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {new Set(blogs.flatMap(b => b.tags)).size}
+              {new Set(blogs.flatMap((b) => b.tags)).size}
             </div>
-            <p className="text-xs text-muted-foreground">
-              Across all posts
-            </p>
+            <p className="text-xs text-muted-foreground">Across all posts</p>
           </CardContent>
         </Card>
       </div>
@@ -178,9 +183,7 @@ export default function BlogDashboard() {
       <Card>
         <CardHeader>
           <CardTitle>All Blog Posts</CardTitle>
-          <CardDescription>
-            Search and manage your blog posts
-          </CardDescription>
+          <CardDescription>Search and manage your blog posts</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2 mb-4">
@@ -194,108 +197,133 @@ export default function BlogDashboard() {
               />
             </div>
             {searchQuery && (
-              <Button
-                variant="outline"
-                onClick={() => setSearchQuery("")}
-              >
+              <Button variant="outline" onClick={() => setSearchQuery("")}>
                 Clear
               </Button>
             )}
           </div>
 
           {/* Table */}
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[100px]">Image</TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Tags</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {blogs.length === 0 ? (
+          {loading ? (
+            <div className="flex items-center justify-center gap-4 [--radius:1.2rem]">
+              <Badge>
+                <Spinner data-icon="inline-start" className="mr-2" />
+                Syncing
+              </Badge>
+            </div>
+          ) : (
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      className="text-center h-32 text-muted-foreground"
-                    >
-                      {searchQuery
-                        ? "No blogs found matching your search."
-                        : "No blogs yet. Create your first post!"}
-                    </TableCell>
+                    <TableHead className="w-[100px]">Image</TableHead>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Tags</TableHead>
+                    <TableHead>View</TableHead>
+                    <TableHead>Created</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ) : (
-                  blogs.map((blog) => (
-                    <TableRow key={blog._id}>
-                      <TableCell>
-                        <Image
-                          src={blog.mainImage}
-                          alt={blog.title}
-                          width={80}
-                          height={60}
-                          className="rounded-md object-cover"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <div className="max-w-md">
-                          <p className="font-semibold truncate">{blog.title}</p>
-                          <p className="text-sm text-muted-foreground truncate mt-1">
-                            {blog.description}
-                          </p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap gap-1 max-w-[200px]">
-                          {blog.tags?.slice(0, 3).map((tag, idx) => (
-                            <Badge key={idx} variant="secondary">
-                              {tag}
-                            </Badge>
-                          ))}
-                          {blog.tags?.length > 3 && (
-                            <Badge variant="outline">
-                              +{blog.tags.length - 3}
-                            </Badge>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell className="whitespace-nowrap">
-                        {new Date(blog.createdAt).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-2 justify-end">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() =>
-                              router.push(`/admin/blog/${blog._id}/edit`)
-                            }
-                          >
-                            <FaEdit className="mr-2 h-4 w-4" />
-                            Edit
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => setDeleteId(blog._id)}
-                          >
-                            <FaTrash className="mr-2 h-4 w-4" />
-                            Delete
-                          </Button>
-                        </div>
+                </TableHeader>
+                <TableBody>
+                  {blogs.length === 0 ? (
+                    <TableRow>
+                      <TableCell
+                        colSpan={5}
+                        className="text-center h-32 text-muted-foreground"
+                      >
+                        {searchQuery
+                          ? "No blogs found matching your search."
+                          : "No blogs yet. Create your first post!"}
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
+                  ) : (
+                    blogs.map((blog) => (
+                      <TableRow key={blog._id}>
+                        <TableCell>
+                          <Image
+                            src={blog.mainImage}
+                            alt={blog.title}
+                            width={80}
+                            height={60}
+                            className="rounded-md object-cover"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <div className="max-w-md">
+                            <p className="font-semibold truncate">
+                              {blog.title}
+                            </p>
+                            <p className="text-sm text-muted-foreground truncate mt-1">
+                              {blog.description}
+                            </p>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-wrap gap-1 max-w-[200px]">
+                            {blog.tags?.slice(0, 3).map((tag, idx) => (
+                              <Badge key={idx} variant="secondary">
+                                {tag}
+                              </Badge>
+                            ))}
+                            {blog.tags?.length > 3 && (
+                              <Badge variant="outline">
+                                +{blog.tags.length - 3}
+                              </Badge>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              window.open(`/blogT/${blog.slug}`, "_blank")
+                            }
+                          >
+                            <FaEye className="mr-2 h-4 w-4" />
+                            View
+                          </Button>
+                        </TableCell>
+
+                        <TableCell className="whitespace-nowrap">
+                          {new Date(blog.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            },
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-2 justify-end">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() =>
+                                router.push(`/admin/blog/${blog._id}/edit`)
+                              }
+                            >
+                              <FaEdit className="mr-2 h-4 w-4" />
+                              Edit
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => setDeleteId(blog._id)}
+                            >
+                              <FaTrash className="mr-2 h-4 w-4" />
+                              Delete
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </CardContent>
       </Card>
 
